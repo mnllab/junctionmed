@@ -1,0 +1,272 @@
+<!DOCTYPE html>
+<html lang="ko" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>케어 소사이어티 리포트 2025 | 대화형 리포트</title>
+    <!-- Chosen Palette: Calm Harmony (Beige, Teal, Coral, Slate) -->
+    <!-- Application Structure Plan: A narrative-driven, single-page scrolling application. The structure flows from Problem (The Crisis) -> Solution (Digital Transition) -> Implementation (Action Plan) -> Key Player (Junctionmed's Vision) -> Future Outlook. This narrative structure is more engaging and persuasive for a user than a simple chapter-by-chapter replication of the report. A sticky navigation bar allows for both guided exploration via scrolling and direct access to specific topics, enhancing usability. -->
+    <!-- Visualization & Content Choices: 1. Aging Population (Report Ch.2) -> Goal: Change -> Viz: Line Chart (Chart.js) -> Interaction: Hover tooltips -> Justification: Clearly shows the accelerating trend over time. 2. Digital Transition Sentiment (Ch.3) -> Goal: Compare -> Viz: Mirrored Bar Chart (Chart.js) -> Interaction: Buttons to filter data (Opportunities/Barriers) -> Justification: Visually contrasts the positive and negative perceptions from the field, making the data interactive and explorable. 3. Collaborative Model (Ch.4) -> Goal: Organize -> Viz: HTML/CSS Flowchart -> Interaction: None (static for clarity) -> Justification: A simple, clear visual representation of the process is more effective than a complex interactive one for this concept. 4. Junctionmed Roadmap (Ch.6) -> Goal: Organize/Change -> Viz: HTML/CSS Vertical Timeline -> Interaction: Click to expand details -> Justification: Presents a large amount of information in a compact, user-driven way, keeping the initial view uncluttered. -->
+    <!-- CONFIRMATION: NO SVG graphics used. NO Mermaid JS used. -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;700;900&display=swap" rel="stylesheet">
+    <style>
+        body { font-family: 'Noto Sans KR', sans-serif; background-color: #F8F5F2; color: #3D405B; }
+        .chart-container { position: relative; width: 100%; max-width: 700px; margin-left: auto; margin-right: auto; height: 300px; max-height: 400px; }
+        @media (min-width: 768px) { .chart-container { height: 400px; } }
+        .nav-link { transition: all 0.3s ease; border-bottom: 2px solid transparent; }
+        .nav-link.active { color: #E07A5F; border-bottom-color: #E07A5F; }
+        .timeline-item-content { max-height: 0; overflow: hidden; transition: max-height 0.5s ease-out; }
+    </style>
+</head>
+<body class="antialiased">
+
+    <header class="sticky top-0 bg-[#F8F5F2]/80 backdrop-blur-sm z-50 shadow-sm">
+        <nav class="container mx-auto px-4">
+            <ul id="nav-menu" class="flex justify-center items-center space-x-4 md:space-x-8 py-4 text-sm md:text-base font-medium">
+                <li><a href="#crisis" class="nav-link p-2">시대 진단</a></li>
+                <li><a href="#transition" class="nav-link p-2">디지털 전환</a></li>
+                <li><a href="#strategy" class="nav-link p-2">대응 전략</a></li>
+                <li><a href="#vision" class="nav-link p-2">정션메드 비전</a></li>
+                <li><a href="#outlook" class="nav-link p-2">미래 전망</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <main>
+        <section class="text-center py-20 md:py-28 bg-white">
+            <div class="container mx-auto px-4">
+                <h1 class="text-4xl md:text-6xl font-extrabold text-[#3D405B] mb-4">케어 소사이어티 리포트 2025</h1>
+                <p class="text-xl md:text-2xl text-[#81B29A] font-light">초고령사회, 디지털 전환의 해법을 묻다</p>
+            </div>
+        </section>
+
+        <section id="crisis" class="py-16 md:py-24">
+            <div class="container mx-auto px-4 text-center">
+                <h2 class="text-3xl md:text-4xl font-bold mb-4 text-[#E07A5F]">1. 시대 진단: 가속화되는 돌봄 위기</h2>
+                <p class="max-w-3xl mx-auto text-lg mb-12">2025년, 대한민국은 65세 이상 인구가 전체의 20%를 넘어서는 '초고령사회'에 진입합니다. 돌봄 수요는 폭발적으로 증가하지만, 기존의 노동력 중심 공급 체계는 한계에 도달했습니다. 아래 차트는 지난 수십 년간의 고령화 추세와 미래 예측을 보여주며 문제의 시급성을 강조합니다.</p>
+                <div class="bg-white rounded-xl shadow-lg p-6 md:p-8">
+                    <h3 class="text-xl font-bold mb-4">고령인구(65세 이상) 비율 변화 및 전망</h3>
+                    <div class="chart-container">
+                        <canvas id="agingTrendChart"></canvas>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="transition" class="py-16 md:py-24 bg-white">
+            <div class="container mx-auto px-4 text-center">
+                <h2 class="text-3xl md:text-4xl font-bold mb-4 text-[#81B29A]">2. 디지털 전환: 위기 속 새로운 가능성</h2>
+                <p class="max-w-3xl mx-auto text-lg mb-12">데이터와 기술에 기반한 '디지털 전환'은 돌봄의 질을 높이고 시스템의 효율성을 극대화할 수 있는 유일한 대안입니다. 그러나 현장에서는 기회에 대한 기대와 현실적인 장벽에 대한 우려가 공존합니다. 아래 버튼을 클릭하여 현장 종사자들이 체감하는 기회와 장벽 요인을 각각 살펴보세요.</p>
+                <div class="bg-[#F8F5F2] rounded-xl shadow-inner p-6 md:p-8">
+                    <h3 class="text-xl font-bold mb-6">현장 종사자가 체감하는 디지털 전환</h3>
+                    <div id="sentiment-filter-buttons" class="flex justify-center space-x-2 mb-6">
+                        <button data-filter="all" class="bg-[#3D405B] text-white px-4 py-2 rounded-full text-sm font-semibold">전체 보기</button>
+                        <button data-filter="opportunities" class="bg-white text-[#3D405B] px-4 py-2 rounded-full text-sm font-semibold border">기회 요인</button>
+                        <button data-filter="barriers" class="bg-white text-[#3D405B] px-4 py-2 rounded-full text-sm font-semibold border">장벽 요인</button>
+                    </div>
+                    <div class="chart-container">
+                        <canvas id="sentimentChart"></canvas>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="strategy" class="py-16 md:py-24">
+            <div class="container mx-auto px-4 text-center">
+                <h2 class="text-3xl md:text-4xl font-bold mb-4 text-[#E07A5F]">3. 대응 전략: 데이터 기반 통합돌봄 모델</h2>
+                <p class="max-w-3xl mx-auto text-lg mb-12">성공적인 디지털 전환을 위해서는 각 기관이 분절적으로 움직이는 것이 아니라, 데이터를 중심으로 유기적으로 협력하는 '통합돌봄 모델' 구축이 필수적입니다. 이 모델은 개인의 건강 및 생활 데이터를 기반으로 맞춤형 서비스를 제공하는 것을 목표로 합니다.</p>
+                <div class="max-w-4xl mx-auto bg-white rounded-xl shadow-lg p-8">
+                    <div class="grid grid-cols-1 md:grid-cols-5 items-center gap-4 text-center">
+                        <div class="p-4 bg-[#F8F5F2] rounded-lg">
+                            <h4 class="font-bold text-lg">지자체</h4>
+                            <p class="text-sm">정책 수립 및 공공 데이터 연계</p>
+                        </div>
+                        <div class="text-2xl font-bold text-[#81B29A] hidden md:block">→</div>
+                        <div class="text-2xl font-bold text-[#81B29A] md:hidden">↓</div>
+                        <div class="p-4 bg-[#F8F5F2] rounded-lg">
+                            <h4 class="font-bold text-lg">복지기관</h4>
+                            <p class="text-sm">생활 데이터 수집 및 맞춤 서비스</p>
+                        </div>
+                        <div class="text-2xl font-bold text-[#81B29A] hidden md:block">→</div>
+                        <div class="text-2xl font-bold text-[#81B29A] md:hidden">↓</div>
+                        <div class="p-4 bg-[#F8F5F2] rounded-lg">
+                            <h4 class="font-bold text-lg">의료기관</h4>
+                            <p class="text-sm">건강 데이터 분석 및 비대면 진료</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="vision" class="py-16 md:py-24 bg-[#3D405B] text-white">
+            <div class="container mx-auto px-4 text-center">
+                <h2 class="text-3xl md:text-4xl font-bold mb-4">4. 정션메드 비전: 케어 디지털 전환 파트너</h2>
+                <p class="max-w-3xl mx-auto text-lg font-light mb-12">정션메드는 생활밀착형 공공 헬스케어 인프라 구축을 통해 정책과 현장, 기술을 연결하며 초고령사회의 해법을 만들어갑니다. 우리의 기술력과 비전은 구체적인 성과와 명확한 로드맵으로 증명됩니다.</p>
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-8 mb-16">
+                    <div class="bg-white/10 p-6 rounded-xl">
+                        <p class="text-5xl font-bold text-[#81B29A] mb-2">3+</p>
+                        <p class="font-semibold">정부 R&D 과제 선정</p>
+                    </div>
+                    <div class="bg-white/10 p-6 rounded-xl">
+                        <p class="text-5xl font-bold text-[#81B29A] mb-2">CES</p>
+                        <p class="font-semibold">글로벌 혁신상 수상</p>
+                    </div>
+                    <div class="bg-white/10 p-6 rounded-xl">
+                        <p class="text-5xl font-bold text-[#81B29A] mb-2">10+</p>
+                        <p class="font-semibold">특허 및 데이터 자산</p>
+                    </div>
+                </div>
+                <h3 class="text-2xl font-bold mb-8">Junctionmed Roadmap</h3>
+                <div id="roadmap-container" class="max-w-2xl mx-auto text-left">
+                    <div class="border-l-2 border-white/30 pl-8 relative">
+                        <div class="mb-8 timeline-item">
+                            <div class="absolute w-4 h-4 bg-[#E07A5F] rounded-full -left-2 mt-1"></div>
+                            <h4 class="text-xl font-bold cursor-pointer" data-target="roadmap-2025">2025: 현장 서비스 강화 ▼</h4>
+                            <div id="roadmap-2025" class="timeline-item-content pt-2 text-white/80">
+                                <p>• 지역 파트너십 기반 실증 사업 모델 확대</p>
+                                <p>• 현장 데이터 수집 및 분석 고도화</p>
+                            </div>
+                        </div>
+                        <div class="mb-8 timeline-item">
+                            <div class="absolute w-4 h-4 bg-white/30 rounded-full -left-2 mt-1"></div>
+                            <h4 class="text-xl font-bold cursor-pointer" data-target="roadmap-2026">2026: 표준 모델 제시 ▼</h4>
+                             <div id="roadmap-2026" class="timeline-item-content pt-2 text-white/80">
+                                <p>• 통합돌봄지원법 연계 표준 서비스 모델 개발</p>
+                                <p>• 데이터 기반 수가 연동 기반 마련</p>
+                            </div>
+                        </div>
+                        <div class="mb-8 timeline-item">
+                            <div class="absolute w-4 h-4 bg-white/30 rounded-full -left-2 mt-1"></div>
+                            <h4 class="text-xl font-bold cursor-pointer" data-target="roadmap-2027">2027: 전국 확산 ▼</h4>
+                             <div id="roadmap-2027" class="timeline-item-content pt-2 text-white/80">
+                                <p>• 전국 지자체 대상 표준 모델 보급</p>
+                                <p>• 공공 헬스케어 플랫폼 구축</p>
+                            </div>
+                        </div>
+                        <div class="timeline-item">
+                            <div class="absolute w-4 h-4 bg-white/30 rounded-full -left-2 mt-1"></div>
+                            <h4 class="text-xl font-bold cursor-pointer" data-target="roadmap-2028">2028+: 글로벌 수출 ▼</h4>
+                             <div id="roadmap-2028" class="timeline-item-content pt-2 text-white/80">
+                                <p>• K-돌봄 모델의 글로벌 시장 진출</p>
+                                <p>• 해외 파트너십 구축 및 현지화</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="outlook" class="py-16 md:py-24">
+            <div class="container mx-auto px-4 text-center">
+                <h2 class="text-3xl md:text-4xl font-bold mb-4 text-[#E07A5F]">5. 미래 전망: 2026년, 새로운 돌봄의 시작</h2>
+                <p class="max-w-3xl mx-auto text-lg mb-12">2026년은 '통합돌봄지원법'의 본격적인 시행과 함께 대한민국 돌봄 체계의 패러다임이 전환되는 역사적인 해가 될 것입니다. 이는 디지털 헬스케어 기술이 제도의 인정을 받고 시장을 확장할 결정적인 기회입니다.</p>
+                <div class="max-w-3xl mx-auto grid grid-cols-1 md:grid-cols-3 gap-8">
+                    <div class="bg-white p-6 rounded-xl shadow-lg">
+                        <h4 class="font-bold text-lg mb-2">법제화</h4>
+                        <p class="text-sm">지역사회 중심 통합돌봄 서비스가 법적 기반을 갖추게 됩니다.</p>
+                    </div>
+                    <div class="bg-white p-6 rounded-xl shadow-lg">
+                        <h4 class="font-bold text-lg mb-2">시장성 확보</h4>
+                        <p class="text-sm">디지털 헬스케어 서비스에 건강보험 수가가 적용될 길이 열립니다.</p>
+                    </div>
+                    <div class="bg-white p-6 rounded-xl shadow-lg">
+                        <h4 class="font-bold text-lg mb-2">글로벌 확장</h4>
+                        <p class="text-sm">성공적인 K-돌봄 모델은 전 세계적인 고령화 문제의 해법이 될 수 있습니다.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <footer class="text-center py-10 bg-white mt-16">
+        <p class="text-gray-600">&copy; 2025 Care Society Report by Junctionmed.</p>
+    </footer>
+
+    <script>
+    document.addEventListener('DOMContentLoaded', () => {
+        const tooltipTitleCallback = (tooltipItems) => {
+            const item = tooltipItems[0];
+            let label = item.chart.data.labels[item.dataIndex];
+            return Array.isArray(label) ? label.join(' ') : label;
+        };
+        const commonPlugins = { tooltip: { callbacks: { title: tooltipTitleCallback } } };
+
+        const agingCtx = document.getElementById('agingTrendChart').getContext('2d');
+        new Chart(agingCtx, {
+            type: 'line',
+            data: {
+                labels: ['2000', '2010', '2020', '2025', '2035', '2045'],
+                datasets: [{
+                    label: '고령인구(65세 이상) 비율 (%)',
+                    data: [7.2, 11.0, 15.7, 20.6, 28.7, 37.0],
+                    borderColor: '#E07A5F',
+                    backgroundColor: 'rgba(224, 122, 95, 0.1)',
+                    fill: true,
+                    tension: 0.4
+                }]
+            },
+            options: { responsive: true, maintainAspectRatio: false, plugins: commonPlugins, scales: { y: { beginAtZero: true } } }
+        });
+
+        const sentimentData = {
+            labels: ['업무 효율성 증대', '돌봄 서비스 질 향상', '객관적 데이터 기반 의사결정', '높은 초기 도입 비용', '개인정보보호 및 보안 우려', '디지털 기기 사용의 어려움'],
+            opportunities: [85, 78, 72, 0, 0, 0],
+            barriers: [0, 0, 0, 88, 80, 60]
+        };
+        const sentimentCtx = document.getElementById('sentimentChart').getContext('2d');
+        const sentimentChart = new Chart(sentimentCtx, {
+            type: 'bar',
+            data: {
+                labels: sentimentData.labels,
+                datasets: [
+                    { label: '기회 요인', data: sentimentData.opportunities, backgroundColor: '#81B29A' },
+                    { label: '장벽 요인', data: sentimentData.barriers, backgroundColor: '#F28F3B' }
+                ]
+            },
+            options: { responsive: true, maintainAspectRatio: false, indexAxis: 'y', plugins: { ...commonPlugins, legend: { display: false } }, scales: { x: { stacked: true }, y: { stacked: true } } }
+        });
+
+        document.getElementById('sentiment-filter-buttons').addEventListener('click', (e) => {
+            if (e.target.tagName === 'BUTTON') {
+                const filter = e.target.dataset.filter;
+                sentimentChart.data.datasets[0].data = (filter === 'all' || filter === 'opportunities') ? sentimentData.opportunities : [0,0,0,0,0,0];
+                sentimentChart.data.datasets[1].data = (filter === 'all' || filter === 'barriers') ? sentimentData.barriers : [0,0,0,0,0,0];
+                sentimentChart.update();
+            }
+        });
+
+        document.getElementById('roadmap-container').addEventListener('click', (e) => {
+            if (e.target.tagName === 'H4' && e.target.dataset.target) {
+                const targetId = e.target.dataset.target;
+                const content = document.getElementById(targetId);
+                const isExpanded = content.style.maxHeight && content.style.maxHeight !== '0px';
+
+                document.querySelectorAll('.timeline-item-content').forEach(el => el.style.maxHeight = '0px');
+
+                if (!isExpanded) {
+                    content.style.maxHeight = content.scrollHeight + 'px';
+                }
+            }
+        });
+
+        const sections = document.querySelectorAll('section[id]');
+        const navLinks = document.querySelectorAll('.nav-link');
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    navLinks.forEach(link => {
+                        link.classList.toggle('active', link.getAttribute('href').substring(1) === entry.target.id);
+                    });
+                }
+            });
+        }, { rootMargin: '-50% 0px -50% 0px' });
+        sections.forEach(sec => observer.observe(sec));
+    });
+    </script>
+</body>
+</html>
