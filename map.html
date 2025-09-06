@@ -179,6 +179,30 @@
       0% { transform: rotate(0deg); }
       100% { transform: rotate(360deg); }
     }
+
+    /* 모바일 반응형 스타일 */
+    @media (max-width: 768px) {
+      header {
+        padding: 12px 16px;
+      }
+      header h1 {
+        font-size: 18px;
+      }
+      .pill {
+        display: none; /* 모바일에선 공간 확보를 위해 숨김 */
+      }
+      #main {
+        /* 사이드바와 지도를 수직으로 쌓음 */
+        grid-template-columns: 1fr;
+        grid-template-rows: auto 1fr; 
+      }
+      #sidebar {
+        border-right: none;
+        border-bottom: 1px solid var(--border-color);
+        /* 사이드바가 화면을 너무 많이 차지하지 않도록 최대 높이 설정 */
+        max-height: 55vh; 
+      }
+    }
   </style>
 </head>
 <body>
@@ -277,7 +301,7 @@
     // 기본 설정
     const DEFAULT_CENTER = { lat: 36.5, lng: 127.8 };
     const DEFAULT_ZOOM = 7;
-    const APP_VERSION = 'v2.0.1';
+    const APP_VERSION = 'v2.1.0';
     const BUILD_DATE = '2025-09-07';
 
     // 유틸리티 함수들
@@ -445,7 +469,7 @@
           color: (idx.color >= 0 && r[idx.color]) ? r[idx.color] : pickColor(i),
           strokeColor: (idx.stroke_color >= 0 && r[idx.stroke_color]) ? r[idx.stroke_color] : pickColor(i),
           strokeOpacity: (idx.stroke_opacity >= 0 && r[idx.stroke_opacity]) ? Number(r[idx.stroke_opacity]) : 0.9,
-          fillOpacity: (idx.fill_opacity >= 0 && r[idx.fill_opacity]) ? Number(r[idx.fill_opacity]) : 0.2,
+          fillOpacity: (idx.fill_opacity >= 0 && r[idx.fill_opacity]) ? Number(r[idx.fill_opacity]) : 0.35, /* 투명도 상향 조정 */
           note: (idx.note >= 0 && r[idx.note]) ? r[idx.note] : ''
         })).filter(it => Number.isFinite(it.lat) && Number.isFinite(it.lng) && Number.isFinite(it.radius_km));
     }
