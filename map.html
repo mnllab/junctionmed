@@ -17,61 +17,61 @@
       --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -2px rgba(0, 0, 0, 0.1);
       --radius: 8px;
     }
-    html, body { 
-      height: 100%; 
-      margin: 0; 
+    html, body {
+      height: 100%;
+      margin: 0;
       font-family: 'Pretendard', system-ui, -apple-system, "Segoe UI", Roboto, "Noto Sans KR", Arial, sans-serif;
       background-color: #f9fafb;
       color: var(--text-main);
     }
-    header { 
-      padding: 12px 20px; 
-      border-bottom: 1px solid var(--border-color); 
-      display: flex; 
-      gap: 16px; 
+    header {
+      padding: 12px 20px;
+      border-bottom: 1px solid var(--border-color);
+      display: flex;
+      gap: 16px;
       align-items: center;
       background-color: #fff;
       box-shadow: var(--shadow);
       z-index: 10;
       position: relative;
     }
-    header h1 { 
-      font-size: 20px; 
-      margin: 0; 
+    header h1 {
+      font-size: 20px;
+      margin: 0;
       font-weight: 700;
     }
-    #main { 
-      display: grid; 
-      grid-template-columns: 340px 1fr; 
-      height: calc(100% - 65px); 
+    #main {
+      display: grid;
+      grid-template-columns: 340px 1fr;
+      height: calc(100% - 65px);
     }
-    #sidebar { 
-      border-right: 1px solid var(--border-color); 
-      padding: 16px; 
-      overflow-y: auto; 
+    #sidebar {
+      border-right: 1px solid var(--border-color);
+      padding: 16px;
+      overflow-y: auto;
       background-color: #fff;
     }
     #map { height: 100%; }
-    
-    .pill { 
-      display: inline-block; 
-      padding: 4px 12px; 
-      border-radius: 999px; 
-      border: 1px solid var(--border-color); 
+
+    .pill {
+      display: inline-block;
+      padding: 4px 12px;
+      border-radius: 999px;
+      border: 1px solid var(--border-color);
       background: var(--background-light);
       font-size: 13px;
       font-weight: 500;
     }
-    
-    input, select, button, textarea { 
-      font: inherit; 
+
+    input, select, button, textarea {
+      font: inherit;
       transition: all 0.2s ease;
     }
-    input[type="text"], input[type="url"], input[type="number"], input[type="password"], textarea, select { 
-      width: 100%; 
-      padding: 8px 12px; 
-      border-radius: var(--radius); 
-      border: 1px solid var(--border-color); 
+    input[type="text"], input[type="url"], input[type="number"], input[type="password"], textarea, select {
+      width: 100%;
+      padding: 8px 12px;
+      border-radius: var(--radius);
+      border: 1px solid var(--border-color);
       box-sizing: border-box;
       background-color: #fff;
     }
@@ -81,16 +81,16 @@
       border-color: var(--color-primary);
       box-shadow: 0 0 0 2px rgba(79, 70, 229, 0.3);
     }
-    
-    button { 
-      padding: 8px 14px; 
-      border-radius: var(--radius); 
-      border: 1px solid var(--border-color); 
-      background: #fff; 
-      cursor: pointer; 
+
+    button {
+      padding: 8px 14px;
+      border-radius: var(--radius);
+      border: 1px solid var(--border-color);
+      background: #fff;
+      cursor: pointer;
       font-weight: 600;
     }
-    button:hover { 
+    button:hover {
       background: var(--background-light);
       border-color: #d1d5db;
     }
@@ -102,18 +102,18 @@
     button#loadBtn:hover {
       background-color: var(--color-primary-hover);
     }
-    
-    details { 
-      background: #fff; 
-      border: 1px solid var(--border-color); 
-      border-radius: var(--radius); 
+
+    details {
+      background: #fff;
+      border: 1px solid var(--border-color);
+      border-radius: var(--radius);
       margin-bottom: 16px;
       overflow: hidden;
     }
     details[open] summary {
       border-bottom: 1px solid var(--border-color);
     }
-    summary { 
+    summary {
       cursor: pointer;
       padding: 12px 14px;
       font-weight: 600;
@@ -138,7 +138,7 @@
 
     .legend { background: #fff; padding: 12px; border-radius: var(--radius); box-shadow: var(--shadow-md); font-size: 13px; }
     .legend h3 { margin: 0 0 8px; font-size: 13px; font-weight: 700; }
-    
+
     label { display: block; margin-bottom: 6px; font-size: 14px; font-weight: 500; }
     .row { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
     .mb8 { margin-bottom: 8px; }
@@ -250,18 +250,420 @@
 
     <div id="map" role="region" aria-label="영업망 지도"></div>
   </div>
-  
+
   <script>
-    // All previous JavaScript code remains the same...
-    // ...
-    // (이전의 모든 JavaScript 코드는 그대로 유지됩니다)
-  </script>
-  
-  <script>
-    // Debug script remains the same...
-    // ...
+    // 전역 변수
+    let map, infoWindow, circles = [], lastItems = [], polygons = [];
+    let refreshTimer = null;
+
+    // 기본 설정
+    const DEFAULT_CENTER = { lat: 36.5, lng: 127.8 };
+    const DEFAULT_ZOOM = 7;
+    const APP_VERSION = 'v1.5.0';
+    const BUILD_DATE = '2025-09-07';
+
+    // 유틸리티 함수들
+    function escapeHtml(s) {
+      return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/\"/g,'&quot;').replace(/'/g,'&#039;');
+    }
+
+    function coerceNumber(v) {
+      if (v == null) return NaN;
+      if (typeof v === 'number') return v;
+      const n = parseFloat(String(v).replace(/,/g, ''));
+      return isNaN(n) ? NaN : n;
+    }
+
+    function pickColor(i) {
+      const colors = ['#4f46e5', '#16a34a', '#f59e0b', '#ef4444', '#8b5cf6', '#0ea5e9', '#22c55e', '#d946ef'];
+      return colors[i % colors.length];
+    }
+
+    // CSV 파서
+    function parseCSV(text) {
+        const rows = [];
+        let i = 0, cur = '', row = [], inQuotes = false;
+        text = text.replace(/\r\n/g, '\n').replace(/\r/g, '\n');
+
+        while (i < text.length) {
+            const ch = text[i];
+            if (inQuotes) {
+                if (ch === '"') {
+                    if (text[i + 1] === '"') { cur += '"'; i++; }
+                    else { inQuotes = false; }
+                } else { cur += ch; }
+            } else {
+                if (ch === '"') { inQuotes = true; }
+                else if (ch === ',') { row.push(cur.trim()); cur = ''; }
+                else if (ch === '\n') {
+                    if (cur !== '' || row.length) {
+                        row.push(cur.trim());
+                        rows.push(row);
+                        row = [];
+                        cur = '';
+                    }
+                } else { cur += ch; }
+            }
+            i++;
+        }
+        if (cur !== '' || row.length) { row.push(cur.trim()); rows.push(row); }
+        if (!rows.length) throw new Error('CSV 내용이 비어있습니다.');
+        const header = rows.shift().map(h => h.trim());
+        return { cols: header, rows };
+    }
+
+    // gviz 파서
+    function parseGviz(raw) {
+      const s = raw.indexOf('(');
+      const e = raw.lastIndexOf(')');
+      if (s === -1 || e === -1) throw new Error('gviz 응답 형식 오류');
+      const obj = JSON.parse(raw.slice(s + 1, e));
+      const cols = obj.table.cols.map(c => c.label || c.id || '');
+      const rows = obj.table.rows.map(r => r.c.map(c => c ? c.v : ''));
+      return { cols, rows };
+    }
+
+    function getThresholds() {
+      return (document.getElementById('thresholds').value || '')
+        .split(',')
+        .map(s => parseFloat(s.trim()))
+        .filter(n => Number.isFinite(n))
+        .sort((a, b) => a - b);
+    }
+
+    function getBin(v, ths) {
+      for (let i = 0; i < ths.length; i++) {
+        if (v < ths[i]) return i;
+      }
+      return ths.length;
+    }
+
+    function getPalette(n) {
+      const maps = {
+        spectral: ['#9e0142', '#d53e4f', '#f46d43', '#fdae61', '#fee08b', '#e6f598', '#abdda4', '#66c2a5', '#3288bd', '#5e4fa2'],
+        viridis: ['#440154', '#482475', '#414487', '#355f8d', '#2a788e', '#21918c', '#22a884', '#44bf70', '#7ad151', '#fde725'],
+        blues: ['#eff3ff', '#c6dbef', '#9ecae1', '#6baed6', '#4292c6', '#2171b5', '#084594'],
+        reds: ['#fee5d9', '#fcbba1', '#fc9272', '#fb6a4a', '#ef3b2c', '#cb181d', '#99000d']
+      };
+      const key = document.getElementById('palette').value || 'spectral';
+      const base = maps[key];
+      if (n <= base.length) return base.slice(0, n);
+      const out = [];
+      for (let i = 0; i < n; i++) {
+        const idx = Math.round(i * (base.length - 1) / (n - 1));
+        out.push(base[idx]);
+      }
+      return out;
+    }
+
+    function initMap() {
+      try {
+        map = new google.maps.Map(document.getElementById('map'), {
+          center: DEFAULT_CENTER,
+          zoom: DEFAULT_ZOOM,
+          mapTypeControl: false,
+          streetViewControl: false,
+          fullscreenControl: false,
+          styles: [ /* Optional: Add map styles for a more custom look */ ]
+        });
+        infoWindow = new google.maps.InfoWindow();
+
+        document.getElementById('mode').addEventListener('change', onModeChange);
+        document.getElementById('loadBtn').addEventListener('click', () => {
+          loadAll();
+          setupAutoRefresh();
+        });
+        document.getElementById('demoBtn').addEventListener('click', loadDemoData);
+        document.getElementById('applyFilter').addEventListener('click', () => {
+          renderCircles(filterItems(lastItems));
+        });
+        ['thresholds', 'palette', 'enableDensity'].forEach(id => {
+          document.getElementById(id).addEventListener('change', () => {
+            renderCircles(filterItems(lastItems));
+          });
+        });
+
+        onModeChange();
+        loadDemoData();
+
+      } catch (e) {
+        console.error('지도 초기화 오류:', e); throw e;
+      }
+    }
+
+    function onModeChange() {
+      const m = document.getElementById('mode').value;
+      document.getElementById('mode-url').style.display = (m === 'url') ? 'block' : 'none';
+      document.getElementById('mode-sheets').style.display = (m === 'sheets') ? 'block' : 'none';
+    }
+
+    function setupAutoRefresh() {
+      const sec = parseInt(document.getElementById('refreshSec').value || '0', 10);
+      if (refreshTimer) { clearInterval(refreshTimer); refreshTimer = null; }
+      if (sec > 0) { refreshTimer = setInterval(loadAll, sec * 1000); }
+    }
+
+    async function loadAll() {
+      try {
+        const items = await loadPointItems();
+        lastItems = items;
+        const geoUrl = document.getElementById('geojsonUrl').value.trim();
+        if (geoUrl) { await loadPolygons(geoUrl); }
+        renderCircles(filterItems(items));
+      } catch (e) {
+        console.error(e);
+        alert('데이터 불러오기 실패: ' + (e?.message || e));
+      }
+    }
+
+    function loadDemoData() {
+        const csv = `name,lat,lng,radius_km,count,color,stroke_color,stroke_opacity,fill_opacity,note
+서울본부,37.5665,126.978,25,2450,#4f46e5,#4f46e5,0.9,0.2,수도권 총괄본부
+부산지사,35.1796,129.0756,20,1320,#16a34a,#16a34a,0.9,0.2,영남권 관리지사
+대구센터,35.8714,128.6014,18,850,#f59e0b,#f59e0b,0.9,0.18,대구경북 담당
+인천지점,37.4563,126.7052,15,680,#ef4444,#ef4444,0.9,0.18,인천경기서부
+광주본부,35.1595,126.8526,22,920,#8b5cf6,#8b5cf6,0.9,0.2,호남권 총괄
+원주센터,37.3422,127.9202,12,420,#0ea5e9,#0ea5e9,0.8,0.15,강원도 원주권역
+대전센터,36.3504,127.3845,16,750,#d946ef,#d946ef,0.9,0.18,충청권 중심`;
+      try {
+        const table = parseCSV(csv);
+        const items = processTableData(table);
+        lastItems = items;
+        renderCircles(filterItems(items));
+      } catch (e) {
+        console.error(e);
+        alert('데모 데이터 로드 실패: ' + (e?.message || e));
+      }
+    }
+
+    async function loadPointItems() {
+      const mode = document.getElementById('mode').value;
+      let table;
+      if (mode === 'url') {
+        const url = document.getElementById('sheetUrl').value.trim();
+        if (!url) throw new Error('시트 공개 URL을 입력하세요');
+        const text = await (await fetch(url)).text();
+        table = url.includes('/gviz/tq') ? parseGviz(text) : parseCSV(text);
+      } else {
+        const id = document.getElementById('sheetId').value.trim();
+        const range = encodeURIComponent(document.getElementById('sheetRange').value.trim());
+        const key = document.getElementById('sheetsApiKey').value.trim();
+        if (!id || !range || !key) throw new Error('시트ID, 범위, API Key를 입력하세요');
+        const url = `https://sheets.googleapis.com/v4/spreadsheets/${id}/values/${range}?key=${key}`;
+        const json = await (await fetch(url)).json();
+        if (json.error) throw new Error(`Sheets API 오류: ${json.error.message}`);
+        if (!json.values || !json.values.length) throw new Error('시트에 데이터가 없습니다');
+        const cols = json.values[0];
+        const rows = json.values.slice(1);
+        table = { cols, rows };
+      }
+      return processTableData(table);
+    }
+
+    function processTableData(table) {
+      const idx = {};
+      const names = table.cols.map(c => String(c).trim().toLowerCase());
+      ['name', 'lat', 'lng', 'radius_km', 'count', 'color', 'stroke_color', 'stroke_opacity', 'fill_opacity', 'note']
+        .forEach(k => idx[k] = names.indexOf(k));
+      return table.rows.map((r, i) => {
+        const name = idx.name >= 0 ? r[idx.name] : `지점 ${i + 1}`;
+        return {
+          name: name,
+          lat: coerceNumber(r[idx.lat]),
+          lng: coerceNumber(r[idx.lng]),
+          radius_km: coerceNumber(r[idx.radius_km]),
+          count: idx.count >= 0 ? coerceNumber(r[idx.count]) : NaN,
+          color: (idx.color >= 0 && r[idx.color]) ? r[idx.color] : pickColor(i),
+          strokeColor: (idx.stroke_color >= 0 && r[idx.stroke_color]) ? r[idx.stroke_color] : pickColor(i),
+          strokeOpacity: (idx.stroke_opacity >= 0 && r[idx.stroke_opacity]) ? Number(r[idx.stroke_opacity]) : 0.9,
+          fillOpacity: (idx.fill_opacity >= 0 && r[idx.fill_opacity]) ? Number(r[idx.fill_opacity]) : 0.2,
+          note: (idx.note >= 0 && r[idx.note]) ? r[idx.note] : ''
+        };
+      }).filter(it => Number.isFinite(it.lat) && Number.isFinite(it.lng) && Number.isFinite(it.radius_km));
+    }
+
+    function filterItems(items) {
+      if (!items || !items.length) return [];
+      const q = (document.getElementById('fName').value || '').trim();
+      const min = parseFloat(document.getElementById('fMin').value);
+      const max = parseFloat(document.getElementById('fMax').value);
+      const hideNaN = document.getElementById('fHideNaN').checked;
+      return items.filter(it => {
+        if (q && !it.name.includes(q)) return false;
+        if (Number.isFinite(min) && !(Number.isFinite(it.count) && it.count >= min)) return false;
+        if (Number.isFinite(max) && !(Number.isFinite(it.count) && it.count <= max)) return false;
+        if (hideNaN && !Number.isFinite(it.count)) return false;
+        return true;
+      });
+    }
+
+    async function loadPolygons(url) {
+        try {
+            const res = await fetch(url);
+            if (!res.ok) throw new Error(`HTTP error! status: ${res.status}`);
+            const gj = await res.json();
+            polygons.forEach(p => p.setMap(null));
+            polygons = [];
+            const ths = getThresholds();
+            const pal = getPalette(ths.length + 1);
+            const densityOn = document.getElementById('enableDensity').checked;
+            gj.features?.forEach((f, i) => {
+                const props = f.properties || {};
+                const val = coerceNumber(props.region_count);
+                const fill = (densityOn && Number.isFinite(val)) ? pal[getBin(val, ths)] : '#6b7280';
+                const poly = new google.maps.Data();
+                poly.addGeoJson({ type: 'FeatureCollection', features: [f] });
+                poly.setStyle({
+                    fillColor: fill, fillOpacity: 0.1, strokeColor: fill,
+                    strokeOpacity: 0.6, strokeWeight: 1.5
+                });
+                poly.setMap(map);
+                poly.addListener('click', (e) => {
+                    const center = e.latLng || map.getCenter();
+                    const html = `<div style="min-width:240px; font-size:14px; line-height:1.6;">
+                      <div style="font-weight:700;margin-bottom:6px; font-size:16px;">${escapeHtml(props.name || `폴리곤 ${i + 1}`)}</div>
+                      ${Number.isFinite(val) ? `<div><b>Region Count:</b> ${val.toLocaleString()}</div>` : ''}
+                    </div>`;
+                    infoWindow.setContent(html);
+                    infoWindow.setPosition(center);
+                    infoWindow.open({ map });
+                });
+                polygons.push(poly);
+            });
+        } catch (e) {
+            console.warn('GeoJSON 로드 실패:', e.message);
+        }
+    }
+
+    function renderCircles(items) {
+      circles.forEach(c => c.setMap(null));
+      circles = [];
+      const bounds = new google.maps.LatLngBounds();
+      const ths = getThresholds();
+      const pal = getPalette(ths.length + 1);
+      const densityOn = document.getElementById('enableDensity').checked;
+
+      items.forEach((it) => {
+        const center = { lat: it.lat, lng: it.lng };
+        const isCountFinite = Number.isFinite(it.count);
+        const fillColor = (densityOn && isCountFinite) ? pal[getBin(it.count, ths)] : it.color;
+        const strokeColor = (densityOn && isCountFinite) ? fillColor : it.strokeColor;
+        const circle = new google.maps.Circle({
+          map, center, radius: it.radius_km * 1000,
+          strokeColor, strokeOpacity: it.strokeOpacity, strokeWeight: 2,
+          fillColor, fillOpacity: it.fillOpacity
+        });
+        circles.push(circle);
+        bounds.extend(center);
+        circle.addListener('click', () => {
+          const html = `<div style="min-width:260px; font-size:14px; line-height:1.6;">
+            <div style="font-weight:700;margin-bottom:6px; font-size:16px;">${escapeHtml(it.name)}</div>
+            <div><b>위치:</b> ${it.lat.toFixed(4)}, ${it.lng.toFixed(4)}</div>
+            <div><b>반경:</b> ${it.radius_km} km</div>
+            ${isCountFinite ? `<div><b>도입 구좌수(count):</b> ${it.count.toLocaleString()}</div>` : ''}
+            ${it.note ? `<div style="margin-top:8px; padding-top:8px; border-top:1px solid #eee;">${escapeHtml(it.note)}</div>` : ''}
+          </div>`;
+          infoWindow.setContent(html);
+          infoWindow.setPosition(center);
+          infoWindow.open({ map });
+        });
+      });
+
+      if (items.length > 0 && !bounds.isEmpty()) map.fitBounds(bounds);
+
+      document.getElementById('countPill').textContent = `데이터: ${items.length}개`;
+      renderLegend(ths, pal);
+      renderStats(items, ths);
+    }
+
+    function renderLegend(ths, pal) {
+      const el = document.getElementById('legendBox');
+      const blocks = [];
+      if (!document.getElementById('enableDensity').checked) {
+        el.innerHTML = '';
+        return;
+      }
+      if (ths.length === 0) {
+        blocks.push({ label: '모든 값', color: pal[0] });
+      } else {
+        for (let i = 0; i <= ths.length; i++) {
+          let label = '';
+          if (i === 0) label = `< ${ths[0].toLocaleString()}`;
+          else if (i === ths.length) label = `≥ ${ths[i - 1].toLocaleString()}`;
+          else label = `${ths[i - 1].toLocaleString()} – ${ths[i] - 1}`;
+          blocks.push({ label, color: pal[i] });
+        }
+      }
+      el.innerHTML = '<div class="legend"><h3>강도 스케일 (Count)</h3>' +
+        blocks.map(b => `<div style="display:flex;align-items:center;gap:8px;margin:6px 0">
+          <span style="display:inline-block;width:16px;height:16px;border-radius:4px;background:${b.color};border:1px solid rgba(0,0,0,.2)"></span>
+          <span>${b.label}</span>
+        </div>`).join('') + '</div>';
+    }
+
+    function renderStats(items, ths) {
+      const el = document.getElementById('stats');
+      const total = items.length;
+      const sum = items.reduce((a, b) => a + (Number.isFinite(b.count) ? b.count : 0), 0);
+      const bins = new Array(ths.length + 1).fill(0);
+      items.forEach(it => {
+        if (Number.isFinite(it.count)) bins[getBin(it.count, ths)]++;
+      });
+
+      let html = `<div class="stat"><span>총 지점 수</span><b>${total.toLocaleString()}</b></div>
+                  <div class="stat"><span>Count 합계</span><b>${sum.toLocaleString()}</b></div>`;
+
+      if (document.getElementById('enableDensity').checked && ths.length > 0) {
+          html += '<div style="height:10px;"></div>';
+          for (let i = 0; i < bins.length; i++) {
+              let label = '';
+              if (i === 0) label = `< ${ths[0].toLocaleString()}`;
+              else if (i === bins.length - 1) label = `≥ ${ths[i - 1].toLocaleString()}`;
+              else label = `${ths[i - 1].toLocaleString()} – ${ths[i] - 1}`;
+              html += `<div class="stat"><span>${label}</span><b>${bins[i].toLocaleString()}</b></div>`;
+          }
+      }
+      el.innerHTML = html;
+    }
+
+    document.addEventListener('DOMContentLoaded', () => {
+      document.getElementById('verPill').textContent = `v${APP_VERSION}`;
+    });
+
+    window.initMap = initMap;
   </script>
 
-  <script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCJKF6l-C4shNQbO99oImE6D_69JL7ZnnE&callback=initMap&libraries=maps,marker&v=weekly"></script>
+  <script>
+    // 디버그 스크립트
+    (function() {
+      const banner = document.getElementById('debugBanner');
+      const panel = document.getElementById('debugPanel');
+      const logEl = document.getElementById('dbgLog');
+      if (document.getElementById('dbgOrigin')) document.getElementById('dbgOrigin').textContent = location.origin;
+      if (document.getElementById('dbgRef')) document.getElementById('dbgRef').textContent = location.origin.replace(/\/$/, '') + '/*';
+      if (document.getElementById('dbgRef2')) document.getElementById('dbgRef2').textContent = location.protocol + '//' + location.host + '/*';
+
+      let inited = false;
+      const oldInit = window.initMap;
+      window.initMap = function() { inited = true; if (oldInit) oldInit(); };
+
+      // 6초 내 initMap 미호출 시 배너 노출 -> 15초로 시간 연장
+      setTimeout(() => {
+        if (!inited) {
+            if (banner) banner.style.display = 'flex';
+        }
+      }, 15000); // 15초로 변경
+
+      document.getElementById('dbgToggle').addEventListener('click', () => {
+        if (panel) panel.style.display = panel.style.display === 'none' ? 'block' : 'none';
+      });
+
+      const log = (m) => { if (logEl) logEl.textContent += (m + '\n'); };
+      window.addEventListener('error', e => { log('[Error] ' + (e.message || e.type)); if (banner) banner.style.display = 'flex'; });
+      window.addEventListener('unhandledrejection', e => { log('[Promise] ' + (e.reason && e.reason.message)); if (banner) banner.style.display = 'flex'; });
+    })();
+  </script>
+
+  <script async defer src="https://maps.googleapis.com/maps/api/js?key=YOUR_API_KEY&callback=initMap&libraries=maps,marker&v=weekly"></script>
 </body>
 </html>
