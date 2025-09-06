@@ -52,6 +52,7 @@
       padding: 16px;
       overflow-y: auto;
       background-color: #fff;
+      transition: transform 0.3s ease-in-out;
     }
     #map { height: 100%; }
 
@@ -180,6 +181,16 @@
       100% { transform: rotate(360deg); }
     }
 
+    #backdrop {
+      position: fixed;
+      top: 0; left: 0;
+      width: 100%; height: 100%;
+      background: rgba(0, 0, 0, 0.4);
+      z-index: 999;
+      display: none;
+    }
+    #mobileMenuBtn { display: none; }
+
     /* 모바일 반응형 스타일 */
     @media (max-width: 768px) {
       header {
@@ -189,29 +200,49 @@
         font-size: 18px;
       }
       .pill {
-        display: none; /* 모바일에선 공간 확보를 위해 숨김 */
+        display: none;
+      }
+      #mobileMenuBtn {
+        display: inline-flex;
+        margin-left: auto;
+        background: none;
+        border: none;
+        padding: 4px;
+        border-radius: 99px;
       }
       #main {
-        /* 사이드바와 지도를 수직으로 쌓음 */
         grid-template-columns: 1fr;
-        grid-template-rows: auto 1fr; 
+        grid-template-rows: 1fr;
       }
       #sidebar {
-        border-right: none;
-        border-bottom: 1px solid var(--border-color);
-        /* 사이드바가 화면을 너무 많이 차지하지 않도록 최대 높이 설정 */
-        max-height: 55vh; 
+        position: fixed;
+        top: 0;
+        left: 0;
+        height: 100%;
+        width: 90%;
+        max-width: 340px;
+        z-index: 1000;
+        box-shadow: var(--shadow-md);
+        transform: translateX(-100%);
+        border-right: 1px solid var(--border-color);
+      }
+      #sidebar.is-open {
+        transform: translateX(0);
       }
     }
   </style>
 </head>
 <body>
   <div id="loader" style="display: none;"><div class="spinner"></div></div>
+  <div id="backdrop"></div>
 
   <header>
     <h1>🗺️ 데이터 지도 시각화 도구</h1>
     <span class="pill" id="countPill">데이터: 0개</span>
     <span class="pill" id="verPill"></span>
+    <button id="mobileMenuBtn" aria-label="설정 메뉴 열기">
+        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="3" y1="12" x2="21" y2="12"></line><line x1="3" y1="6" x2="21" y2="6"></line><line x1="3" y1="18" x2="21" y2="18"></line></svg>
+    </button>
   </header>
 
   <div id="debugBanner" style="display:none;padding:10px 16px;background:#fee2e2;color:#991b1b;border-bottom:1px solid #fecaca;font-size:14px; display:flex; align-items:center; justify-content:space-between;">
@@ -301,7 +332,7 @@
     // 기본 설정
     const DEFAULT_CENTER = { lat: 36.5, lng: 127.8 };
     const DEFAULT_ZOOM = 7;
-    const APP_VERSION = 'v2.1.0';
+    const APP_VERSION = 'v2.2.0';
     const BUILD_DATE = '2025-09-07';
 
     // 유틸리티 함수들
@@ -405,6 +436,7 @@
         });
         infoWindow = new google.maps.InfoWindow();
 
+        // Register event listeners
         document.getElementById('loadBtn').addEventListener('click', loadAll);
         document.getElementById('demoBtn').addEventListener('click', loadDemoData);
         document.getElementById('applyFilter').addEventListener('click', () => {
@@ -416,6 +448,24 @@
           });
         });
 
+        // Mobile sidebar controls
+        const mobileMenuBtn = document.getElementById('mobileMenuBtn');
+        const sidebar = document.getElementById('sidebar');
+        const backdrop = document.getElementById('backdrop');
+
+        function openSidebar() {
+            backdrop.style.display = 'block';
+            sidebar.classList.add('is-open');
+        }
+        function closeSidebar() {
+            backdrop.style.display = 'none';
+            sidebar.classList.remove('is-open');
+        }
+
+        mobileMenuBtn.addEventListener('click', openSidebar);
+        backdrop.addEventListener('click', closeSidebar);
+
+        // Initial data load
         loadDemoData();
 
       } catch (e) {
@@ -469,7 +519,7 @@
           color: (idx.color >= 0 && r[idx.color]) ? r[idx.color] : pickColor(i),
           strokeColor: (idx.stroke_color >= 0 && r[idx.stroke_color]) ? r[idx.stroke_color] : pickColor(i),
           strokeOpacity: (idx.stroke_opacity >= 0 && r[idx.stroke_opacity]) ? Number(r[idx.stroke_opacity]) : 0.9,
-          fillOpacity: (idx.fill_opacity >= 0 && r[idx.fill_opacity]) ? Number(r[idx.fill_opacity]) : 0.35, /* 투명도 상향 조정 */
+          fillOpacity: (idx.fill_opacity >= 0 && r[idx.fill_opacity]) ? Number(r[idx.fill_opacity]) : 0.35,
           note: (idx.note >= 0 && r[idx.note]) ? r[idx.note] : ''
         })).filter(it => Number.isFinite(it.lat) && Number.isFinite(it.lng) && Number.isFinite(it.radius_km));
     }
