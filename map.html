@@ -272,12 +272,12 @@
 
   <script>
     // 전역 변수
-    let map, infoWindow, circles = [], lastItems = [], polygons = [];
+    let map, infoWindow, circles = [], lastItems = [];
 
     // 기본 설정
     const DEFAULT_CENTER = { lat: 36.5, lng: 127.8 };
     const DEFAULT_ZOOM = 7;
-    const APP_VERSION = 'v2.0.0';
+    const APP_VERSION = 'v2.0.1';
     const BUILD_DATE = '2025-09-07';
 
     // 유틸리티 함수들
@@ -407,8 +407,6 @@
       try {
         const items = await loadPointItems();
         lastItems = items;
-        const geoUrl = document.getElementById('geojsonUrl').value.trim();
-        if (geoUrl) { await loadPolygons(geoUrl); }
         renderCircles(filterItems(items));
       } catch (e) {
         console.error(e);
@@ -465,10 +463,6 @@
         if (hideNaN && !Number.isFinite(it.count)) return false;
         return true;
       });
-    }
-
-    async function loadPolygons(url) {
-        // This function remains the same
     }
 
     function renderCircles(items) {
