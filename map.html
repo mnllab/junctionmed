@@ -259,7 +259,7 @@
     // 기본 설정
     const DEFAULT_CENTER = { lat: 36.5, lng: 127.8 };
     const DEFAULT_ZOOM = 7;
-    const APP_VERSION = 'v1.5.0';
+    const APP_VERSION = 'v1.5.1';
     const BUILD_DATE = '2025-09-07';
 
     // 유틸리티 함수들
@@ -357,6 +357,8 @@
     }
 
     function initMap() {
+      // 지도 초기화 성공 시, 불필요한 디버그 배너를 숨깁니다.
+      document.getElementById('debugBanner').style.display = 'none';
       try {
         map = new google.maps.Map(document.getElementById('map'), {
           center: DEFAULT_CENTER,
@@ -387,7 +389,10 @@
         loadDemoData();
 
       } catch (e) {
-        console.error('지도 초기화 오류:', e); throw e;
+        console.error('지도 초기화 오류:', e);
+        // 진짜 오류 발생 시 다시 배너를 표시할 수 있습니다.
+        document.getElementById('debugBanner').style.display = 'flex';
+        throw e;
       }
     }
 
@@ -647,12 +652,12 @@
       const oldInit = window.initMap;
       window.initMap = function() { inited = true; if (oldInit) oldInit(); };
 
-      // 6초 내 initMap 미호출 시 배너 노출 -> 15초로 시간 연장
+      // 15초 내 initMap 미호출 시 배너 노출
       setTimeout(() => {
         if (!inited) {
             if (banner) banner.style.display = 'flex';
         }
-      }, 15000); // 15초로 변경
+      }, 15000);
 
       document.getElementById('dbgToggle').addEventListener('click', () => {
         if (panel) panel.style.display = panel.style.display === 'none' ? 'block' : 'none';
@@ -667,3 +672,4 @@
   <script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCJKF6l-C4shNQbO99oImE6D_69JL7ZnnE&callback=initMap&libraries=maps,marker&v=weekly"></script>
 </body>
 </html>
+
