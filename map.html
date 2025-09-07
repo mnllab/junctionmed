@@ -190,6 +190,7 @@
       display: none;
     }
     #mobileMenuBtn { display: none; }
+    #closeSidebarBtn { display: none; } /* 데스크탑에선 숨김 */
 
     /* 모바일 반응형 스타일 */
     @media (max-width: 768px) {
@@ -229,6 +230,19 @@
       #sidebar.is-open {
         transform: translateX(0);
       }
+      #closeSidebarBtn {
+        display: block;
+        position: absolute;
+        top: 10px;
+        right: 10px;
+        background: none;
+        border: none;
+        font-size: 28px;
+        line-height: 1;
+        padding: 0 8px;
+        color: var(--text-muted);
+        cursor: pointer;
+      }
     }
   </style>
 </head>
@@ -263,6 +277,7 @@
 
   <div id="main">
     <aside id="sidebar">
+      <button id="closeSidebarBtn" aria-label="설정 메뉴 닫기">&times;</button>
       <details open>
         <summary>⚙️ 데이터 & 필터</summary>
         <div class="details-content">
@@ -277,7 +292,7 @@
             </button>
             <button id="demoBtn" type="button">
               <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17.5 19H9a7 7 0 1 1 6.71-9h1.79a4.5 4.5 0 1 1 0 9Z"/></svg>
-              기본정보
+              현황
             </button>
           </div>
 
@@ -332,7 +347,7 @@
     // 기본 설정
     const DEFAULT_CENTER = { lat: 36.5, lng: 127.8 };
     const DEFAULT_ZOOM = 7;
-    const APP_VERSION = 'v2.2.0';
+    const APP_VERSION = 'v2.2.1';
     const BUILD_DATE = '2025-09-07';
 
     // 유틸리티 함수들
@@ -452,6 +467,7 @@
         const mobileMenuBtn = document.getElementById('mobileMenuBtn');
         const sidebar = document.getElementById('sidebar');
         const backdrop = document.getElementById('backdrop');
+        const closeSidebarBtn = document.getElementById('closeSidebarBtn');
 
         function openSidebar() {
             backdrop.style.display = 'block';
@@ -464,6 +480,7 @@
 
         mobileMenuBtn.addEventListener('click', openSidebar);
         backdrop.addEventListener('click', closeSidebar);
+        closeSidebarBtn.addEventListener('click', closeSidebar);
 
         // Initial data load
         loadDemoData();
