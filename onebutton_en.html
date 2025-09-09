@@ -1,292 +1,292 @@
 <!DOCTYPE html>
 <html lang="en" class="scroll-smooth">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>CareBOM One-Button - Senior Care Automation Solution</title>
-    <script src="https://cdn.tailwindcss.com"></script>
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;700;900&display=swap" rel="stylesheet">
-    <!-- Chosen Palette: Corporate Blue & Light Gray -->
-    <!-- Application Structure Plan: This single-page application (SPA) is designed with a storytelling approach, considering the user's information acquisition process. Sections are arranged in the order of [Introduction → Key Features → How It Works → Expected Benefits → Technological Reliability], guiding users to understand the service's necessity, value, and trustworthiness step by step. A fixed navigation bar at the top enhances easy movement between sections, while charts and interactive cards visually highlight key strengths based on data, maximizing information delivery. This is the most effective way to transform static leaflet information into a dynamic web experience that increases user engagement and understanding. -->
-    <!-- Visualization & Content Choices: [90% reduction in reporting time → Inform/Compare → Doughnut Chart → Interactive Tooltip → Visually represents key metrics to help users immediately grasp service efficiency → Chart.js/Canvas], [Benefits/Reliability Information → Organize/Inform → Card/List layout with icons → Subtle UI changes on hover → Structures complex text and provides visual cues to improve readability and encourage exploration → HTML/CSS/Tailwind], [How It Works → Organize → Step component → Displays description on click → Clearly guides the user through a sequential process and encourages active information verification → HTML/CSS/JS]. NO SVG/Mermaid. -->
-    <!-- CONFIRMATION: NO SVG graphics used. NO Mermaid JS used. -->
-    <style>
-        body { font-family: 'Noto Sans KR', sans-serif; }
-        .nav-link.active { color: #2563eb; font-weight: 700; }
-        .step-item.active { border-color: #2563eb; background-color: #eff6ff; }
-        .step-content { display: none; }
-        .step-content.active { display: block; }
-        .chart-container { position: relative; width: 100%; max-width: 400px; margin-left: auto; margin-right: auto; height: 300px; max-height: 400px; }
-        @media (min-width: 768px) { .chart-container { height: 350px; } }
-    </style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CareBOM One-Button - Senior Care Automation Solution</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;700;900&display=swap" rel="stylesheet">
+    <!-- Chosen Palette: Corporate Blue & Light Gray -->
+    <!-- Application Structure Plan: This single-page application (SPA) is designed with a storytelling approach, considering the user's information acquisition process. Sections are arranged in the order of [Introduction → Key Features → How It Works → Expected Benefits → Technological Reliability], guiding users to understand the service's necessity, value, and trustworthiness step by step. A fixed navigation bar at the top enhances easy movement between sections, while charts and interactive cards visually highlight key strengths based on data, maximizing information delivery. This is the most effective way to transform static leaflet information into a dynamic web experience that increases user engagement and understanding. -->
+    <!-- Visualization & Content Choices: [90% reduction in reporting time → Inform/Compare → Doughnut Chart → Interactive Tooltip → Visually represents key metrics to help users immediately grasp service efficiency → Chart.js/Canvas], [Benefits/Reliability Information → Organize/Inform → Card/List layout with icons → Subtle UI changes on hover → Structures complex text and provides visual cues to improve readability and encourage exploration → HTML/CSS/Tailwind], [How It Works → Organize → Step component → Displays description on click → Clearly guides the user through a sequential process and encourages active information verification → HTML/CSS/JS]. NO SVG/Mermaid. -->
+    <!-- CONFIRMATION: NO SVG graphics used. NO Mermaid JS used. -->
+    <style>
+        body { font-family: 'Noto Sans KR', sans-serif; }
+        .nav-link.active { color: #2563eb; font-weight: 700; }
+        .step-item.active { border-color: #2563eb; background-color: #eff6ff; }
+        .step-content { display: none; }
+        .step-content.active { display: block; }
+        .chart-container { position: relative; width: 100%; max-width: 400px; margin-left: auto; margin-right: auto; height: 300px; max-height: 400px; }
+        @media (min-width: 768px) { .chart-container { height: 350px; } }
+    </style>
 </head>
 <body class="bg-slate-50 text-slate-800">
 
-    <header id="header" class="bg-white/80 backdrop-blur-lg fixed top-0 left-0 right-0 z-50 shadow-sm">
-        <div class="container mx-auto px-6 py-3 flex justify-between items-center">
-            <a href="#hero" class="text-xl font-bold text-blue-800">CareBOM One-Button</a>
-            <nav class="hidden md:flex space-x-8">
-                <a href="#solution" class="nav-link text-slate-600 hover:text-blue-600 transition-colors">Solution</a>
-                <a href="#how-it-works" class="nav-link text-slate-600 hover:text-blue-600 transition-colors">How It Works</a>
-                <a href="#effects" class="nav-link text-slate-600 hover:text-blue-600 transition-colors">Benefits</a>
-                <a href="#reliability" class="nav-link text-slate-600 hover:text-blue-600 transition-colors">Reliability</a>
-            </nav>
-            <button id="mobile-menu-button" class="md:hidden">
-                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-7 6h7"></path></svg>
-            </button>
-        </div>
-        <div id="mobile-menu" class="hidden md:hidden px-6 pb-4">
-            <a href="#solution" class="block py-2 text-slate-600 hover:text-blue-600">Solution</a>
-            <a href="#how-it-works" class="block py-2 text-slate-600 hover:text-blue-600">How It Works</a>
-            <a href="#effects" class="block py-2 text-slate-600 hover:text-blue-600">Benefits</a>
-            <a href="#reliability" class="block py-2 text-slate-600 hover:text-blue-600">Reliability</a>
-        </div>
-    </header>
+    <header id="header" class="bg-white/80 backdrop-blur-lg fixed top-0 left-0 right-0 z-50 shadow-sm">
+        <div class="container mx-auto px-6 py-3 flex justify-between items-center">
+            <a href="#hero" class="text-xl font-bold text-blue-800">CareBOM One-Button</a>
+            <nav class="hidden md:flex space-x-8">
+                <a href="#solution" class="nav-link text-slate-600 hover:text-blue-600 transition-colors">Solution</a>
+                <a href="#how-it-works" class="nav-link text-slate-600 hover:text-blue-600 transition-colors">How It Works</a>
+                <a href="#effects" class="nav-link text-slate-600 hover:text-blue-600 transition-colors">Benefits</a>
+                <a href="#reliability" class="nav-link text-slate-600 hover:text-blue-600 transition-colors">Reliability</a>
+            </nav>
+            <button id="mobile-menu-button" class="md:hidden">
+                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-7 6h7"></path></svg>
+            </button>
+        </div>
+        <div id="mobile-menu" class="hidden md:hidden px-6 pb-4">
+            <a href="#solution" class="block py-2 text-slate-600 hover:text-blue-600">Solution</a>
+            <a href="#how-it-works" class="block py-2 text-slate-600 hover:text-blue-600">How It Works</a>
+            <a href="#effects" class="block py-2 text-slate-600 hover:text-blue-600">Benefits</a>
+            <a href="#reliability" class="block py-2 text-slate-600 hover:text-blue-600">Reliability</a>
+        </div>
+    </header>
 
-    <main>
-        <section id="hero" class="bg-white pt-24 pb-16 md:pt-32 md:pb-24">
-            <div class="container mx-auto px-6 text-center">
-                <h1 class="text-4xl md:text-6xl font-extrabold text-blue-900 leading-tight">
-                    The Senior Care Automation Solution<br>with a Single Button
-                </h1>
-                <p class="mt-4 text-lg md:text-2xl font-semibold text-blue-800">Care simple, Care smart</p>
-                <p class="mt-6 max-w-3xl mx-auto text-base md:text-lg text-slate-600">
-                    CareBOM One-Button uses AI to automatically record and analyze conversations between seniors and caregivers, handling report writing in a single step. Free yourself from tedious administrative tasks and focus on the core value of care.
-                </p>
-            </div>
-        </section>
+    <main>
+        <section id="hero" class="bg-white pt-24 pb-16 md:pt-32 md:pb-24">
+            <div class="container mx-auto px-6 text-center">
+                <h1 class="text-4xl md:text-6xl font-extrabold text-blue-900 leading-tight">
+                    The Senior Care Automation Solution<br>with a Single Button
+                </h1>
+                <p class="mt-4 text-lg md:text-2xl font-semibold text-blue-800">Care simple, Care smart</p>
+                <p class="mt-6 max-w-3xl mx-auto text-base md:text-lg text-slate-600">
+                    CareBOM One-Button uses AI to automatically record and analyze conversations between seniors and caregivers, handling report writing in a single step. Free yourself from tedious administrative tasks and focus on the core value of care.
+                </p>
+            </div>
+        </section>
 
-        <section id="solution" class="py-16 md:py-24">
-            <div class="container mx-auto px-6">
-                <div class="text-center mb-12">
-                    <h2 class="text-3xl md:text-4xl font-bold text-slate-900">Seamless Records, Uninterrupted Care</h2>
-                    <p class="mt-4 max-w-2xl mx-auto text-slate-600">CareBOM's 'Institution-Specific Professional Report' is more than just a record; it's a practical tool that can be used immediately for institutional management and professional care.</p>
-                </div>
+        <section id="solution" class="py-16 md:py-24">
+            <div class="container mx-auto px-6">
+                <div class="text-center mb-12">
+                    <h2 class="text-3xl md:text-4xl font-bold text-slate-900">Seamless Records, Uninterrupted Care</h2>
+                    <p class="mt-4 max-w-2xl mx-auto text-slate-600">CareBOM's 'Institution-Specific Professional Report' is more than just a record; it's a practical tool that can be used immediately for institutional management and professional care.</p>
+                </div>
 
-                <div class="grid md:grid-cols-2 gap-8 items-center">
-                    <div class="bg-white p-8 rounded-xl shadow-lg">
-                        <h3 class="text-2xl font-bold text-blue-900 mb-4">Key Features</h3>
-                        <p class="text-slate-600 mb-6">
-                            The <span class="font-semibold text-blue-700">One-Button Service</span> automatically records and analyzes conversations between seniors and caregivers, extracting 11 key pieces of information, including health status, emotions, medication, and meals. The generated data is organized into a report format required by the institution with a single button click and is instantly delivered to administrators and family members.
-                        </p>
-                         <ul class="space-y-3 text-slate-700">
-                            <li class="flex items-start"><span class="text-blue-500 font-bold mr-3">✓</span><div><span class="font-bold">Caregivers</span> can reduce administrative time and focus on their core duties.</div></li>
-                            <li class="flex items-start"><span class="text-blue-500 font-bold mr-3">✓</span><div><span class="font-bold">Administrators</span> can efficiently run the institution by checking reliable information in real-time.</div></li>
-                            <li class="flex items-start"><span class="text-blue-500 font-bold mr-3">✓</span><div><span class="font-bold">Family members</span> receive detailed updates on their elders' condition, giving them peace of mind.</div></li>
-                        </ul>
-                    </div>
-                    <div class="text-center">
-                        <div class="chart-container">
-                             <canvas id="efficiencyChart"></canvas>
-                        </div>
-                        <p class="mt-4 font-medium text-slate-700">Reduce report writing time by over <span class="text-blue-600 font-bold text-xl">90%</span>,<br>and collect <span class="text-green-600 font-bold text-xl">100%</span> of all data without any omissions.</p>
-                    </div>
-                </div>
-            </div>
-        </section>
+                <div class="grid md:grid-cols-2 gap-8 items-center">
+                    <div class="bg-white p-8 rounded-xl shadow-lg">
+                        <h3 class="text-2xl font-bold text-blue-900 mb-4">Key Features</h3>
+                        <p class="text-slate-600 mb-6">
+                            The <span class="font-semibold text-blue-700">One-Button Service</span> automatically records and analyzes conversations between seniors and caregivers, extracting 11 key pieces of information, including health status, emotions, medication, and meals. The generated data is organized into a report format required by the institution with a single button click and is instantly delivered to administrators and family members.
+                        </p>
+                         <ul class="space-y-3 text-slate-700">
+                            <li class="flex items-start"><span class="text-blue-500 font-bold mr-3">✓</span><div><span class="font-bold">Caregivers</span> can reduce administrative time and focus on their core duties.</div></li>
+                            <li class="flex items-start"><span class="text-blue-500 font-bold mr-3">✓</span><div><span class="font-bold">Administrators</span> can efficiently run the institution by checking reliable information in real-time.</div></li>
+                            <li class="flex items-start"><span class="text-blue-500 font-bold mr-3">✓</span><div><span class="font-bold">Family members</span> receive detailed updates on their elders' condition, giving them peace of mind.</div></li>
+                        </ul>
+                    </div>
+                    <div class="text-center">
+                        <div class="chart-container">
+                               <canvas id="efficiencyChart"></canvas>
+                        </div>
+                        <p class="mt-4 font-medium text-slate-700">Reduce report writing time by over <span class="text-blue-600 font-bold text-xl">90%</span>,<br>and collect <span class="text-green-600 font-bold text-xl">100%</span> of all data without any omissions.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
 
-        <section id="how-it-works" class="py-16 md:py-24 bg-white">
-            <div class="container mx-auto px-6">
-                <div class="text-center mb-12">
-                    <h2 class="text-3xl md:text-4xl font-bold text-slate-900">Simple to Use</h2>
-                    <p class="mt-4 max-w-2xl mx-auto text-slate-600">No complex system training is needed. Anyone can start smart care with just one button. Click on each step for a detailed explanation.</p>
-                </div>
-                <div class="flex flex-col md:flex-row justify-center items-start gap-4">
-                    <div id="step-1" class="step-item active w-full md:w-1/4 p-4 border-2 border-slate-200 rounded-lg text-center cursor-pointer transition">
-                        <div class="text-4xl mb-2">1️⃣</div>
-                        <h3 class="font-bold">Click the Button</h3>
-                    </div>
-                    <div id="step-2" class="step-item w-full md:w-1/4 p-4 border-2 border-slate-200 rounded-lg text-center cursor-pointer transition">
-                        <div class="text-4xl mb-2">2️⃣</div>
-                        <h3 class="font-bold">AI Automatic Analysis</h3>
-                    </div>
-                    <div id="step-3" class="step-item w-full md:w-1/4 p-4 border-2 border-slate-200 rounded-lg text-center cursor-pointer transition">
-                        <div class="text-4xl mb-2">3️⃣</div>
-                        <h3 class="font-bold">Report Sharing</h3>
-                    </div>
-                </div>
-                <div class="mt-8 max-w-2xl mx-auto">
-                    <div id="content-1" class="step-content active bg-blue-50 p-6 rounded-lg">
-                        <h4 class="font-bold text-lg text-blue-900">Automatic Conversation Recording at the Start of Care</h4>
-                        <p class="mt-2 text-slate-700">When you start a care service, just press the tablet's button once, and all conversations will be automatically recorded and converted into text. Say goodbye to the hassle of manual records and the worry of missing information.</p>
-                    </div>
-                    <div id="content-2" class="step-content bg-blue-50 p-6 rounded-lg">
-                        <h4 class="font-bold text-lg text-blue-900">Real-time Data Extraction for Health, Emotions, Medication, and more</h4>
-                        <p class="mt-2 text-slate-700">CareBOM's AI analyzes the conversation content in real-time, accurately extracting and structuring 11 key pieces of information about the senior's health status, emotional changes, medication status, and meals.</p>
-                    </div>
-                    <div id="content-3" class="step-content bg-blue-50 p-6 rounded-lg">
-                        <h4 class="font-bold text-lg text-blue-900">Automatic Report Dispatch to Administrators and Family Members</h4>
-                        <p class="mt-2 text-slate-700">The analyzed data is automatically generated into a professional report in a pre-set format and is securely sent to institution administrators and family members with a single click.</p>
-                    </div>
-                </div>
-                <br><br>
-                <div style="display: flex; justify-content: center; align-items: center; width: 100%;">
-                  <img src="https://mnllab.github.io/junctionmed/assets/onebutton_workflow.jpg" alt="CareBOM One-Button Service Workflow" style="max-width: 80%; height: auto; display: block; border-radius: 12px; box-shadow: 0 4px 12px rgba(0,0,0,0.3);">
-                </div>    
-            </div>
-        </section>
+        <section id="how-it-works" class="py-16 md:py-24 bg-white">
+            <div class="container mx-auto px-6">
+                <div class="text-center mb-12">
+                    <h2 class="text-3xl md:text-4xl font-bold text-slate-900">Simple to Use</h2>
+                    <p class="mt-4 max-w-2xl mx-auto text-slate-600">No complex system training is needed. Anyone can start smart care with just one button. Click on each step for a detailed explanation.</p>
+                </div>
+                <div class="flex flex-col md:flex-row justify-center items-start gap-4">
+                    <div id="step-1" class="step-item active w-full md:w-1/4 p-4 border-2 border-slate-200 rounded-lg text-center cursor-pointer transition">
+                        <div class="text-4xl mb-2">1️⃣</div>
+                        <h3 class="font-bold">Click the Button</h3>
+                    </div>
+                    <div id="step-2" class="step-item w-full md:w-1/4 p-4 border-2 border-slate-200 rounded-lg text-center cursor-pointer transition">
+                        <div class="text-4xl mb-2">2️⃣</div>
+                        <h3 class="font-bold">AI Automatic Analysis</h3>
+                    </div>
+                    <div id="step-3" class="step-item w-full md:w-1/4 p-4 border-2 border-slate-200 rounded-lg text-center cursor-pointer transition">
+                        <div class="text-4xl mb-2">3️⃣</div>
+                        <h3 class="font-bold">Report Sharing</h3>
+                    </div>
+                </div>
+                <div class="mt-8 max-w-2xl mx-auto">
+                    <div id="content-1" class="step-content active bg-blue-50 p-6 rounded-lg">
+                        <h4 class="font-bold text-lg text-blue-900">Automatic Conversation Recording at the Start of Care</h4>
+                        <p class="mt-2 text-slate-700">When you start a care service, just press the tablet's button once, and all conversations will be automatically recorded and converted into text. Say goodbye to the hassle of manual records and the worry of missing information.</p>
+                    </div>
+                    <div id="content-2" class="step-content bg-blue-50 p-6 rounded-lg">
+                        <h4 class="font-bold text-lg text-blue-900">Real-time Data Extraction for Health, Emotions, Medication, and more</h4>
+                        <p class="mt-2 text-slate-700">CareBOM's AI analyzes the conversation content in real-time, accurately extracting and structuring 11 key pieces of information about the senior's health status, emotional changes, medication status, and meals.</p>
+                    </div>
+                    <div id="content-3" class="step-content bg-blue-50 p-6 rounded-lg">
+                        <h4 class="font-bold text-lg text-blue-900">Automatic Report Dispatch to Administrators and Family Members</h4>
+                        <p class="mt-2 text-slate-700">The analyzed data is automatically generated into a professional report in a pre-set format and is securely sent to institution administrators and family members with a single click.</p>
+                    </div>
+                </div>
+                <br><br>
+                <div style="display: flex; justify-content: center; align-items: center; width: 100%;">
+                    <img src="https://mnllab.github.io/junctionmed/assets/onebutton_workflow.jpg" alt="CareBOM One-Button Service Workflow" style="max-width: 80%; height: auto; display: block; border-radius: 12px; box-shadow: 0 4px 12px rgba(0,0,0,0.3);">
+                </div>  
+            </div>
+        </section>
 
-        <section id="effects" class="py-16 md:py-24">
-            <div class="container mx-auto px-6">
-                <div class="text-center mb-12">
-                    <h2 class="text-3xl md:text-4xl font-bold text-slate-900">Expected Benefits of Adopting One-Button</h2>
-                    <p class="mt-4 max-w-2xl mx-auto text-slate-600">Beyond just saving time, it improves the quality of care and increases satisfaction for everyone involved.</p>
-                </div>
-                <div class="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
-                    <div class="bg-white p-6 rounded-xl shadow-lg hover:shadow-xl hover:-translate-y-1 transition-all">
-                        <div class="text-3xl text-blue-600 mb-3">⏱️</div>
-                        <h3 class="text-xl font-bold mb-2">Maximized Work Efficiency</h3>
-                        <p class="text-slate-600">Reduces report time by 90% and collects 100% of data, fundamentally preventing record omissions and maximizing caregiver efficiency.</p>
-                    </div>
-                    <div class="bg-white p-6 rounded-xl shadow-lg hover:shadow-xl hover:-translate-y-1 transition-all">
-                        <div class="text-3xl text-green-600 mb-3">🛡️</div>
-                        <h3 class="text-xl font-bold mb-2">Caregiver Protection</h3>
-                        <p class="text-slate-600">The entire care process is recorded with objective data, which can be used as reliable evidence in case of disputes and enables performance-based compensation.</p>
-                    </div>
-                    <div class="bg-white p-6 rounded-xl shadow-lg hover:shadow-xl hover:-translate-y-1 transition-all">
-                        <div class="text-3xl text-amber-600 mb-3">👴👵</div>
-                        <h3 class="text-xl font-bold mb-2">Senior-Friendly UX/UI</h3>
-                        <p class="text-slate-600">The voice-based interface allows seniors who are not used to digital devices to use it easily and without hesitation.</p>
-                    </div>
-                    <div class="bg-white p-6 rounded-xl shadow-lg hover:shadow-xl hover:-translate-y-1 transition-all">
-                        <div class="text-3xl text-indigo-600 mb-3">📈</div>
-                        <h3 class="text-xl font-bold mb-2">Enhanced Institutional Value</h3>
-                        <p class="text-slate-600">By building a data-driven, advanced care infrastructure, the institution's competitiveness and value are enhanced.</p>
-                    </div>
-                </div>
-            </div>
-        </section>
+        <section id="effects" class="py-16 md:py-24">
+            <div class="container mx-auto px-6">
+                <div class="text-center mb-12">
+                    <h2 class="text-3xl md:text-4xl font-bold text-slate-900">Expected Benefits of Adopting One-Button</h2>
+                    <p class="mt-4 max-w-2xl mx-auto text-slate-600">Beyond just saving time, it improves the quality of care and increases satisfaction for everyone involved.</p>
+                </div>
+                <div class="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
+                    <div class="bg-white p-6 rounded-xl shadow-lg hover:shadow-xl hover:-translate-y-1 transition-all">
+                        <div class="text-3xl text-blue-600 mb-3">⏱️</div>
+                        <h3 class="text-xl font-bold mb-2">Maximized Work Efficiency</h3>
+                        <p class="text-slate-600">Reduces report time by 90% and collects 100% of data, fundamentally preventing record omissions and maximizing caregiver efficiency.</p>
+                    </div>
+                    <div class="bg-white p-6 rounded-xl shadow-lg hover:shadow-xl hover:-translate-y-1 transition-all">
+                        <div class="text-3xl text-green-600 mb-3">🛡️</div>
+                        <h3 class="text-xl font-bold mb-2">Caregiver Protection</h3>
+                        <p class="text-slate-600">The entire care process is recorded with objective data, which can be used as reliable evidence in case of disputes and enables performance-based compensation.</p>
+                    </div>
+                    <div class="bg-white p-6 rounded-xl shadow-lg hover:shadow-xl hover:-translate-y-1 transition-all">
+                        <div class="text-3xl text-amber-600 mb-3">👴👵</div>
+                        <h3 class="text-xl font-bold mb-2">Senior-Friendly UX/UI</h3>
+                        <p class="text-slate-600">The voice-based interface allows seniors who are not used to digital devices to use it easily and without hesitation.</p>
+                    </div>
+                    <div class="bg-white p-6 rounded-xl shadow-lg hover:shadow-xl hover:-translate-y-1 transition-all">
+                        <div class="text-3xl text-indigo-600 mb-3">📈</div>
+                        <h3 class="text-xl font-bold mb-2">Enhanced Institutional Value</h3>
+                        <p class="text-slate-600">By building a data-driven, advanced care infrastructure, the institution's competitiveness and value are enhanced.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
 
-        <section id="reliability" class="py-16 md:py-24 bg-white">
-            <div class="container mx-auto px-6">
-                <div class="text-center mb-12">
-                    <h2 class="text-3xl md:text-4xl font-bold text-slate-900">Technology and Reliability</h2>
-                    <p class="mt-4 max-w-3xl mx-auto text-slate-600 font-medium text-blue-800 bg-blue-50 py-3 px-4 rounded-lg">"A proven solution that can be used immediately in the field."</p>
-            </div>
-                <div class="max-w-4xl mx-auto grid grid-cols-1 md:grid-cols-2 gap-x-12 gap-y-6">
-                    <div class="flex items-start"><span class="text-green-500 text-2xl mr-3 mt-1">✅</span><div><h4 class="font-semibold">Domestic Trials Completed</h4><p class="text-sm text-slate-500">Applied in major institutions such as Wonju Senior Welfare Center and Gangwon Medical Cooperative.</p></div></div>
-                    <div class="flex items-start"><span class="text-green-500 text-2xl mr-3 mt-1">✅</span><div><h4 class="font-semibold">Policy Integration</h4><p class="text-sm text-slate-500">Adopted in municipal projects in Gwangju and Gangwon, verified in health and welfare fields.</p></div></div>
-                    <div class="flex items-start"><span class="text-green-500 text-2xl mr-3 mt-1">✅</span><div><h4 class="font-semibold">Overseas PoC in Progress</h4><p class="text-sm text-slate-500">Agreements finalized with silver towns in Singapore and local partners in Malaysia.</p></div></div>
-                    <div class="flex items-start"><span class="text-green-500 text-2xl mr-3 mt-1">✅</span><div><h4 class="font-semibold">Preparing for Global Expansion</h4><p class="text-sm text-slate-500">Confirmed participation in the 2026 CES global exhibition.</p></div></div>
-                    <div class="flex items-start"><span class="text-green-500 text-2xl mr-3 mt-1">✅</span><div><h4 class="font-semibold">Secured Technological Reliability</h4><p class="text-sm text-slate-500">TIPS-selected company, holding over 30 patents and certifications.</p></div></div>
-                </div>
-            </div>
-        </section>
-    </main>
+        <section id="reliability" class="py-16 md:py-24 bg-white">
+            <div class="container mx-auto px-6">
+                <div class="text-center mb-12">
+                    <h2 class="text-3xl md:text-4xl font-bold text-slate-900">Technology and Reliability</h2>
+                    <p class="mt-4 max-w-3xl mx-auto text-slate-600 font-medium text-blue-800 bg-blue-50 py-3 px-4 rounded-lg">"A proven solution that can be used immediately in the field."</p>
+                </div>
+                <div class="max-w-4xl mx-auto grid grid-cols-1 md:grid-cols-2 gap-x-12 gap-y-6">
+                    <div class="flex items-start"><span class="text-green-500 text-2xl mr-3 mt-1">✅</span><div><h4 class="font-semibold">Domestic Trials Completed</h4><p class="text-sm text-slate-500">Applied in major institutions such as Wonju Senior Welfare Center and Gangwon Medical Cooperative.</p></div></div>
+                    <div class="flex items-start"><span class="text-green-500 text-2xl mr-3 mt-1">✅</span><div><h4 class="font-semibold">Policy Integration</h4><p class="text-sm text-slate-500">Adopted in municipal projects in Gwangju and Gangwon, verified in health and welfare fields.</p></div></div>
+                    <div class="flex items-start"><span class="text-green-500 text-2xl mr-3 mt-1">✅</span><div><h4 class="font-semibold">Overseas PoC in Progress</h4><p class="text-sm text-slate-500">Agreements finalized with silver towns in Singapore and local partners in Malaysia.</p></div></div>
+                    <div class="flex items-start"><span class="text-green-500 text-2xl mr-3 mt-1">✅</span><div><h4 class="font-semibold">Preparing for Global Expansion</h4><p class="text-sm text-slate-500">Confirmed participation in the 2026 CES global exhibition.</p></div></div>
+                    <div class="flex items-start"><span class="text-green-500 text-2xl mr-3 mt-1">✅</span><div><h4 class="font-semibold">Secured Technological Reliability</h4><p class="text-sm text-slate-500">TIPS-selected company, holding over 30 patents and certifications.</p></div></div>
+                </div>
+            </div>
+        </section>
+    </main>
 
-    <footer class="bg-slate-800 text-white">
-        <div class="container mx-auto px-6 py-8 text-center">
-            <h4 class="font-bold text-lg mb-2">Junction Med Co., Ltd.</h4>
-            <p class="text-sm text-slate-400">Head Office: 4th Floor, 130 Beodeul 1-gil, Namsan-myeon, Chuncheon-si, Gangwon-do, South Korea</p>
-            <p class="text-sm text-slate-400">CEO: Park Ji-min</p>
-            <p class="text-sm text-slate-400">Business Registration Number: 440-86-02331</p>
-            <p class="text-sm text-slate-400 mt-2">Inquiries: +82-2-6951-2788</p>
-            <p class="text-xs text-slate-500 mt-4">Copyright 2024 Junction Med Co., Ltd. All rights reserved</p>
-        </div>
-    </footer>
+    <footer class="bg-slate-800 text-white">
+        <div class="container mx-auto px-6 py-8 text-center">
+            <h4 class="font-bold text-lg mb-2">Junction Med Co., Ltd.</h4>
+            <p class="text-sm text-slate-400">Head Office: 4th Floor, 130 Beodeul 1-gil, Namsan-myeon, Chuncheon-si, Gangwon-do, South Korea</p>
+            <p class="text-sm text-slate-400">CEO: Park Ji-min</p>
+            <p class="text-sm text-slate-400">Business Registration Number: 440-86-02331</p>
+            <p class="text-sm text-slate-400 mt-2">Inquiries: +82-2-6951-2788</p>
+            <p class="text-xs text-slate-500 mt-4">Copyright 2024 Junction Med Co., Ltd. All rights reserved</p>
+        </div>
+    </footer>
 
 <script>
 document.addEventListener('DOMContentLoaded', () => {
 
-    const mobileMenuButton = document.getElementById('mobile-menu-button');
-    const mobileMenu = document.getElementById('mobile-menu');
-    mobileMenuButton.addEventListener('click', () => {
-        mobileMenu.classList.toggle('hidden');
-    });
+    const mobileMenuButton = document.getElementById('mobile-menu-button');
+    const mobileMenu = document.getElementById('mobile-menu');
+    mobileMenuButton.addEventListener('click', () => {
+        mobileMenu.classList.toggle('hidden');
+    });
 
-    const ctx = document.getElementById('efficiencyChart').getContext('2d');
-    const efficiencyChart = new Chart(ctx, {
-        type: 'doughnut',
-        data: {
-            labels: ['Time Saved on Reports', 'Actual Reporting Time'],
-            datasets: [{
-                label: 'Work Time Efficiency',
-                data: [90, 10],
-                backgroundColor: [
-                    '#3b82f6',
-                    '#e5e7eb'
-                ],
-                borderColor: [
-                    '#ffffff',
-                    '#ffffff'
-                ],
-                borderWidth: 2
-            }]
-        },
-        options: {
-            responsive: true,
-            maintainAspectRatio: false,
-            plugins: {
-                legend: {
-                    position: 'bottom',
-                },
-                tooltip: {
-                    callbacks: {
-                        label: function(context) {
-                            let label = context.label || '';
-                            if (label) {
-                                label += ': ';
-                            }
-                            if (context.parsed !== null) {
-                                label += context.parsed + '%';
-                            }
-                            return label;
-                        }
-                    }
-                }
-            },
-            cutout: '70%'
-        }
-    });
-    
-    const steps = document.querySelectorAll('.step-item');
-    const stepContents = document.querySelectorAll('.step-content');
+    const ctx = document.getElementById('efficiencyChart').getContext('2d');
+    const efficiencyChart = new Chart(ctx, {
+        type: 'doughnut',
+        data: {
+            labels: ['Time Saved on Reports', 'Actual Reporting Time'],
+            datasets: [{
+                label: 'Work Time Efficiency',
+                data: [90, 10],
+                backgroundColor: [
+                    '#3b82f6',
+                    '#e5e7eb'
+                ],
+                borderColor: [
+                    '#ffffff',
+                    '#ffffff'
+                ],
+                borderWidth: 2
+            }]
+        },
+        options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            plugins: {
+                legend: {
+                    position: 'bottom',
+                },
+                tooltip: {
+                    callbacks: {
+                        label: function(context) {
+                            let label = context.label || '';
+                            if (label) {
+                                label += ': ';
+                            }
+                            if (context.parsed !== null) {
+                                label += context.parsed + '%';
+                            }
+                            return label;
+                        }
+                    }
+                }
+            },
+            cutout: '70%'
+        }
+    });
+    
+    const steps = document.querySelectorAll('.step-item');
+    const stepContents = document.querySelectorAll('.step-content');
 
-    steps.forEach(step => {
-        step.addEventListener('click', () => {
-            const targetId = step.id.split('-')[1];
+    steps.forEach(step => {
+        step.addEventListener('click', () => {
+            const targetId = step.id.split('-')[1];
 
-            steps.forEach(s => s.classList.remove('active'));
-            step.classList.add('active');
+            steps.forEach(s => s.classList.remove('active'));
+            step.classList.add('active');
 
-            stepContents.forEach(c => {
-                c.classList.remove('active');
-                if (c.id === `content-${targetId}`) {
-                    c.classList.add('active');
-                }
-            });
-        });
-    });
+            stepContents.forEach(c => {
+                c.classList.remove('active');
+                if (c.id === `content-${targetId}`) {
+                    c.classList.add('active');
+                }
+            });
+        });
+    });
 
-    const sections = document.querySelectorAll('section');
-    const navLinks = document.querySelectorAll('.nav-link');
-    const header = document.getElementById('header');
-    
-    const observerOptions = {
-      root: null,
-      rootMargin: `-${header.offsetHeight}px 0px 0px 0px`,
-      threshold: 0.4
-    };
+    const sections = document.querySelectorAll('section');
+    const navLinks = document.querySelectorAll('.nav-link');
+    const header = document.getElementById('header');
+    
+    const observerOptions = {
+      root: null,
+      rootMargin: `-${header.offsetHeight}px 0px 0px 0px`,
+      threshold: 0.4
+    };
 
-    const observer = new IntersectionObserver((entries, observer) => {
-      entries.forEach(entry => {
-        if (entry.isIntersecting) {
-          navLinks.forEach(link => {
-            link.classList.remove('active');
-            if (link.getAttribute('href').substring(1) === entry.target.id) {
-              link.classList.add('active');
-            }
-          });
-        }
-      });
-    }, observerOptions);
+    const observer = new IntersectionObserver((entries, observer) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          navLinks.forEach(link => {
+            link.classList.remove('active');
+            if (link.getAttribute('href').substring(1) === entry.target.id) {
+              link.classList.add('active');
+            }
+          });
+        }
+      });
+    }, observerOptions);
 
-    sections.forEach(section => {
-      observer.observe(section);
-    });
+    sections.forEach(section => {
+      observer.observe(section);
+    });
 });
 </script>
 </body>
