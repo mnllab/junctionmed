@@ -1,291 +1,292 @@
 <!DOCTYPE html>
 <html lang="ml" class="scroll-smooth">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>കെയർബോം വൺ-ബട്ടൺ - മുതിർന്നവരുടെ പരിചരണത്തിനുള്ള ഓട്ടോമേഷൻ സൊല്യൂഷൻ</title>
-    <script src="https://cdn.tailwindcss.com"></script>
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;700;900&display=swap" rel="stylesheet">
-    <!-- Chosen Palette: Corporate Blue & Light Gray -->
-    <!-- Application Structure Plan: This single-page application (SPA) is designed with a storytelling approach, considering the user's information acquisition process. Sections are arranged in the order of [Introduction → Key Features → How It Works → Expected Benefits → Technological Reliability], guiding users to understand the service's necessity, value, and trustworthiness step by step. A fixed navigation bar at the top enhances easy movement between sections, while charts and interactive cards visually highlight key strengths based on data, maximizing information delivery. This is the most effective way to transform static leaflet information into a dynamic web experience that increases user engagement and understanding. -->
-    <!-- Visualization & Content Choices: [90% reduction in reporting time → Inform/Compare → Doughnut Chart → Interactive Tooltip → Visually represents key metrics to help users immediately grasp service efficiency → Chart.js/Canvas], [Benefits/Reliability Information → Organize/Inform → Card/List layout with icons → Subtle UI changes on hover → Structures complex text and provides visual cues to improve readability and encourage exploration → HTML/CSS/Tailwind], [How It Works → Organize → Step component → Displays description on click → Clearly guides the user through a sequential process and encourages active information verification → HTML/CSS/JS]. NO SVG/Mermaid. -->
-    <!-- CONFIRMATION: NO SVG graphics used. NO Mermaid JS used. -->
-    <style>
-        body { font-family: 'Noto Sans KR', sans-serif; }
-        .nav-link.active { color: #2563eb; font-weight: 700; }
-        .step-item.active { border-color: #2563eb; background-color: #eff6ff; }
-        .step-content { display: none; }
-        .step-content.active { display: block; }
-        .chart-container { position: relative; width: 100%; max-width: 400px; margin-left: auto; margin-right: auto; height: 300px; max-height: 400px; }
-        @media (min-width: 768px) { .chart-container { height: 350px; } }
-    </style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>കെയർബോം വൺ-ബട്ടൺ - മുതിർന്നവരുടെ പരിചരണത്തിനുള്ള ഓട്ടോമേഷൻ സൊല്യൂഷൻ</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;700;900&display=swap" rel="stylesheet">
+    <!-- Chosen Palette: Corporate Blue & Light Gray -->
+    <!-- Application Structure Plan: This single-page application (SPA) is designed with a storytelling approach, considering the user's information acquisition process. Sections are arranged in the order of [Introduction → Key Features → How It Works → Expected Benefits → Technological Reliability], guiding users to understand the service's necessity, value, and trustworthiness step by step. A fixed navigation bar at the top enhances easy movement between sections, while charts and interactive cards visually highlight key strengths based on data, maximizing information delivery. This is the most effective way to transform static leaflet information into a dynamic web experience that increases user engagement and understanding. -->
+    <!-- Visualization & Content Choices: [90% reduction in reporting time → Inform/Compare → Doughnut Chart → Interactive Tooltip → Visually represents key metrics to help users immediately grasp service efficiency → Chart.js/Canvas], [Benefits/Reliability Information → Organize/Inform → Card/List layout with icons → Subtle UI changes on hover → Structures complex text and provides visual cues to improve readability and encourage exploration → HTML/CSS/Tailwind], [How It Works → Organize → Step component → Displays description on click → Clearly guides the user through a sequential process and encourages active information verification → HTML/CSS/JS]. NO SVG/Mermaid. -->
+    <!-- CONFIRMATION: NO SVG graphics used. NO Mermaid JS used. -->
+    <style>
+        body { font-family: 'Noto Sans KR', sans-serif; }
+        .nav-link.active { color: #2563eb; font-weight: 700; }
+        .step-item.active { border-color: #2563eb; background-color: #eff6ff; }
+        .step-content { display: none; }
+        .step-content.active { display: block; }
+        .chart-container { position: relative; width: 100%; max-width: 400px; margin-left: auto; margin-right: auto; height: 300px; max-height: 400px; }
+        @media (min-width: 768px) { .chart-container { height: 350px; } }
+    </style>
 </head>
 <body class="bg-slate-50 text-slate-800">
 
-    <header id="header" class="bg-white/80 backdrop-blur-lg fixed top-0 left-0 right-0 z-50 shadow-sm">
-        <div class="container mx-auto px-6 py-3 flex justify-between items-center">
-            <a href="#hero" class="text-xl font-bold text-blue-800">കെയർബോം വൺ-ബട്ടൺ</a>
-            <nav class="hidden md:flex space-x-8">
-                <a href="#solution" class="nav-link text-slate-600 hover:text-blue-600 transition-colors">പരിഹാരം</a>
-                <a href="#how-it-works" class="nav-link text-slate-600 hover:text-blue-600 transition-colors">ഇത് എങ്ങനെ പ്രവർത്തിക്കുന്നു</a>
-                <a href="#effects" class="nav-link text-slate-600 hover:text-blue-600 transition-colors">നേട്ടങ്ങൾ</a>
-                <a href="#reliability" class="nav-link text-slate-600 hover:text-blue-600 transition-colors">വിശ്വാസ്യത</a>
-            </nav>
-            <button id="mobile-menu-button" class="md:hidden">
-                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-7 6h7"></path></svg>
-            </button>
-        </div>
-        <div id="mobile-menu" class="hidden md:hidden px-6 pb-4">
-            <a href="#solution" class="block py-2 text-slate-600 hover:text-blue-600">പരിഹാരം</a>
-            <a href="#how-it-works" class="block py-2 text-slate-600 hover:text-blue-600">ഇത് എങ്ങനെ പ്രവർത്തിക്കുന്നു</a>
-            <a href="#effects" class="block py-2 text-slate-600 hover:text-blue-600">നേട്ടങ്ങൾ</a>
-            <a href="#reliability" class="block py-2 text-slate-600 hover:text-blue-600">വിശ്വാസ്യത</a>
-        </div>
-    </header>
+    <header id="header" class="bg-white/80 backdrop-blur-lg fixed top-0 left-0 right-0 z-50 shadow-sm">
+        <div class="container mx-auto px-6 py-3 flex justify-between items-center">
+            <a href="#hero" class="text-xl font-bold text-blue-800">കെയർബോം വൺ-ബട്ടൺ</a>
+            <nav class="hidden md:flex space-x-8">
+                <a href="#solution" class="nav-link text-slate-600 hover:text-blue-600 transition-colors">പരിഹാരം</a>
+                <a href="#how-it-works" class="nav-link text-slate-600 hover:text-blue-600 transition-colors">ഇത് എങ്ങനെ പ്രവർത്തിക്കുന്നു</a>
+                <a href="#effects" class="nav-link text-slate-600 hover:text-blue-600 transition-colors">നേട്ടങ്ങൾ</a>
+                <a href="#reliability" class="nav-link text-slate-600 hover:text-blue-600 transition-colors">വിശ്വാസ്യത</a>
+            </nav>
+            <button id="mobile-menu-button" class="md:hidden">
+                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-7 6h7"></path></svg>
+            </button>
+        </div>
+        <div id="mobile-menu" class="hidden md:hidden px-6 pb-4">
+            <a href="#solution" class="block py-2 text-slate-600 hover:text-blue-600">പരിഹാരം</a>
+            <a href="#how-it-works" class="block py-2 text-slate-600 hover:text-blue-600">ഇത് എങ്ങനെ പ്രവർത്തിക്കുന്നു</a>
+            <a href="#effects" class="block py-2 text-slate-600 hover:text-blue-600">നേട്ടങ്ങൾ</a>
+            <a href="#reliability" class="block py-2 text-slate-600 hover:text-blue-600">വിശ്വാസ്യത</a>
+        </div>
+    </header>
 
-    <main>
-        <section id="hero" class="bg-white pt-24 pb-16 md:pt-32 md:pb-24">
-            <div class="container mx-auto px-6 text-center">
-                <h1 class="text-4xl md:text-6xl font-extrabold text-blue-900 leading-tight">
-                    ഒരു ബട്ടൺ അമർത്തുന്നതിലൂടെ മുതിർന്നവരുടെ പരിചരണം<br>ഓട്ടോമേറ്റ് ചെയ്യുന്ന സൊല്യൂഷൻ
-                </h1>
-                <p class="mt-4 text-lg md:text-2xl font-semibold text-blue-800">Care simple, Care smart</p>
-                <p class="mt-6 max-w-3xl mx-auto text-base md:text-lg text-slate-600">
-                    കെയർബോം വൺ-ബട്ടൺ, മുതിർന്നവരും പരിചരിക്കുന്നവരും തമ്മിലുള്ള സംഭാഷണങ്ങൾ AI ഉപയോഗിച്ച് ഓട്ടോമാറ്റിക്കായി രേഖപ്പെടുത്തുകയും വിശകലനം ചെയ്യുകയും ചെയ്യുന്നു, ഇത് റിപ്പോർട്ടുകൾ തയ്യാറാക്കുന്നതിനുള്ള ജോലിയെ എളുപ്പമാക്കുന്നു. ബുദ്ധിമുട്ടുള്ള ഭരണപരമായ ജോലികളിൽ നിന്ന് സ്വയം മോചിതനാകുകയും പരിചരണത്തിന്റെ പ്രധാന മൂല്യത്തിൽ ശ്രദ്ധ കേന്ദ്രീകരിക്കുകയും ചെയ്യുക.
-                </p>
-            </div>
-        </section>
+    <main>
+        <section id="hero" class="bg-white pt-24 pb-16 md:pt-32 md:pb-24">
+            <div class="container mx-auto px-6 text-center">
+                <h1 class="text-4xl md:text-6xl font-extrabold text-blue-900 leading-tight">
+                    ഒരു ബട്ടൺ ഉപയോഗിച്ച് മുതിർന്നവരുടെ പരിചരണ<br>ഓട്ടോമേഷൻ പരിഹാരം
+                </h1>
+                <p class="mt-4 text-lg md:text-2xl font-semibold text-blue-800">Care simple, Care smart</p>
+                <p class="mt-6 max-w-3xl mx-auto text-base md:text-lg text-slate-600">
+                    കെയർബോം വൺ-ബട്ടൺ, മുതിർന്നവരും പരിചരിക്കുന്നവരും തമ്മിലുള്ള സംഭാഷണങ്ങൾ AI ഉപയോഗിച്ച് ഓട്ടോമാറ്റിക്കായി രേഖപ്പെടുത്തുകയും വിശകലനം ചെയ്യുകയും ചെയ്യുന്നു, ഇത് റിപ്പോർട്ടുകൾ തയ്യാറാക്കുന്നതിനുള്ള ജോലിയെ എളുപ്പമാക്കുന്നു. ബുദ്ധിമുട്ടുള്ള ഭരണപരമായ ജോലികളിൽ നിന്ന് സ്വയം മോചിതനാകുകയും പരിചരണത്തിന്റെ പ്രധാന മൂല്യത്തിൽ ശ്രദ്ധ കേന്ദ്രീകരിക്കുകയും ചെയ്യുക.
+                </p>
+            </div>
+        </section>
 
-        <section id="solution" class="py-16 md:py-24">
-            <div class="container mx-auto px-6">
-                <div class="text-center mb-12">
-                    <h2 class="text-3xl md:text-4xl font-bold text-slate-900">തടസ്സമില്ലാത്ത രേഖകൾ, തടസ്സമില്ലാത്ത പരിചരണം</h2>
-                    <p class="mt-4 max-w-2xl mx-auto text-slate-600">കെയർബോമിന്റെ 'സ്ഥാപന-നിർദ്ദിഷ്ട പ്രൊഫഷണൽ റിപ്പോർട്ട്' കേവലം ഒരു രേഖയല്ല; ഇത് സ്ഥാപനപരമായ മാനേജ്‌മെന്റിനും പ്രൊഫഷണൽ പരിചരണത്തിനും ഉടനടി ഉപയോഗിക്കാവുന്ന ഒരു പ്രായോഗിക ഉപകരണമാണ്.</p>
-                </div>
+        <section id="solution" class="py-16 md:py-24">
+            <div class="container mx-auto px-6">
+                <div class="text-center mb-12">
+                    <h2 class="text-3xl md:text-4xl font-bold text-slate-900">തെറ്റുകളില്ലാത്ത രേഖകൾ, തടസ്സമില്ലാത്ത പരിചരണം</h2>
+                    <p class="mt-4 max-w-2xl mx-auto text-slate-600">കെയർബോമിന്റെ 'സ്ഥാപന-നിർദ്ദിഷ്ട പ്രൊഫഷണൽ റിപ്പോർട്ട്' കേവലം ഒരു രേഖയല്ല; ഇത് സ്ഥാപനപരമായ മാനേജ്‌മെന്റിനും പ്രൊഫഷണൽ പരിചരണത്തിനും ഉടനടി ഉപയോഗിക്കാവുന്ന ഒരു പ്രായോഗിക ഉപകരണമാണ്.</p>
+                </div>
 
-                <div class="grid md:grid-cols-2 gap-8 items-center">
-                    <div class="bg-white p-8 rounded-xl shadow-lg">
-                        <h3 class="text-2xl font-bold text-blue-900 mb-4">പ്രധാന സവിശേഷതകൾ</h3>
-                        <p class="text-slate-600 mb-6">
-                            <span class="font-semibold text-blue-700">വൺ-ബട്ടൺ സർവീസ്</span>, മുതിർന്നവരും പരിചരിക്കുന്നവരും തമ്മിലുള്ള സംഭാഷണങ്ങൾ AI ഉപയോഗിച്ച് ഓട്ടോമാറ്റിക്കായി രേഖപ്പെടുത്തുകയും വിശകലനം ചെയ്യുകയും ചെയ്യുന്നു, ഇത് ആരോഗ്യനില, വികാരങ്ങൾ, മരുന്ന്, ഭക്ഷണം എന്നിവയുൾപ്പെടെ 11 പ്രധാന വിവരങ്ങൾ എക്‌സ്‌ട്രാക്റ്റ് ചെയ്യുന്നു. സ്ഥാപനത്തിന് ആവശ്യമുള്ള ഫോർമാറ്റിലുള്ള ഒരു റിപ്പോർട്ടായി ഈ ഡാറ്റ ഒരു ബട്ടൺ അമർത്തുന്നതിലൂടെ സംഘടിപ്പിക്കപ്പെടുകയും അഡ്മിനിസ്ട്രേറ്റർമാർക്കും കുടുംബാംഗങ്ങൾക്കും തത്സമയം കൈമാറുകയും ചെയ്യുന്നു.
-                        </p>
-                         <ul class="space-y-3 text-slate-700">
-                            <li class="flex items-start"><span class="text-blue-500 font-bold mr-3">✓</span><div><span class="font-bold">പരിചരിക്കുന്നവർക്ക്</span> ഭരണപരമായ സമയം കുറച്ച് പ്രധാന ജോലികളിൽ ശ്രദ്ധ കേന്ദ്രീകരിക്കാൻ കഴിയും.</div></li>
-                            <li class="flex items-start"><span class="text-blue-500 font-bold mr-3">✓</span><div><span class="font-bold">അഡ്മിനിസ്ട്രേറ്റർമാർക്ക്</span> വിശ്വസനീയമായ വിവരങ്ങൾ തത്സമയം പരിശോധിച്ച് സ്ഥാപനം കാര്യക്ഷമമായി നടത്താൻ കഴിയും.</div></li>
-                            <li class="flex items-start"><span class="text-blue-500 font-bold mr-3">✓</span><div><span class="font-bold">കുടുംബാംഗങ്ങൾക്ക്</span> മുതിർന്നവരുടെ അവസ്ഥയെക്കുറിച്ച് വിശദമായ വിവരങ്ങൾ ലഭിക്കുന്നതിലൂടെ മനസ്സമാധാനം ലഭിക്കുന്നു.</div></li>
-                        </ul>
-                    </div>
-                    <div class="text-center">
-                        <div class="chart-container">
-                             <canvas id="efficiencyChart"></canvas>
-                        </div>
-                        <p class="mt-4 font-medium text-slate-700">റിപ്പോർട്ട് എഴുതുന്ന സമയം <span class="text-blue-600 font-bold text-xl">90%</span>-ൽ കൂടുതലായി കുറയ്ക്കുക,<br>കൂടാതെ എല്ലാ ഡാറ്റയുടെയും <span class="text-green-600 font-bold text-xl">100%</span> ഒരു നഷ്ടവുമില്ലാതെ ശേഖരിക്കുക.</p>
-                    </div>
-            </div>
-        </section>
+                <div class="grid md:grid-cols-2 gap-8 items-center">
+                    <div class="bg-white p-8 rounded-xl shadow-lg">
+                        <h3 class="text-2xl font-bold text-blue-900 mb-4">പ്രധാന സവിശേഷതകൾ</h3>
+                        <p class="text-slate-600 mb-6">
+                            <span class="font-semibold text-blue-700">വൺ-ബട്ടൺ സർവീസ്</span>, മുതിർന്നവരും പരിചരിക്കുന്നവരും തമ്മിലുള്ള സംഭാഷണങ്ങൾ AI ഉപയോഗിച്ച് ഓട്ടോമാറ്റിക്കായി രേഖപ്പെടുത്തുകയും വിശകലനം ചെയ്യുകയും ചെയ്യുന്നു, ഇത് ആരോഗ്യനില, വികാരങ്ങൾ, മരുന്ന്, ഭക്ഷണം എന്നിവയുൾപ്പെടെ 11 പ്രധാന വിവരങ്ങൾ എക്‌സ്‌ട്രാക്റ്റ് ചെയ്യുന്നു. സ്ഥാപനത്തിന് ആവശ്യമുള്ള ഫോർമാറ്റിലുള്ള ഒരു റിപ്പോർട്ടായി ഈ ഡാറ്റ ഒരു ബട്ടൺ അമർത്തുന്നതിലൂടെ സംഘടിപ്പിക്കപ്പെടുകയും അഡ്മിനിസ്ട്രേറ്റർമാർക്കും കുടുംബാംഗങ്ങൾക്കും തത്സമയം കൈമാറുകയും ചെയ്യുന്നു.
+                        </p>
+                         <ul class="space-y-3 text-slate-700">
+                            <li class="flex items-start"><span class="text-blue-500 font-bold mr-3">✓</span><div><span class="font-bold">പരിചരിക്കുന്നവർക്ക്</span> ഭരണപരമായ സമയം കുറച്ച് പ്രധാന ജോലികളിൽ ശ്രദ്ധ കേന്ദ്രീകരിക്കാൻ കഴിയും.</div></li>
+                            <li class="flex items-start"><span class="text-blue-500 font-bold mr-3">✓</span><div><span class="font-bold">അഡ്മിനിസ്ട്രേറ്റർമാർക്ക്</span> വിശ്വസനീയമായ വിവരങ്ങൾ തത്സമയം പരിശോധിച്ച് സ്ഥാപനം കാര്യക്ഷമമായി നടത്താൻ കഴിയും.</div></li>
+                            <li class="flex items-start"><span class="text-blue-500 font-bold mr-3">✓</span><div><span class="font-bold">കുടുംബാംഗങ്ങൾക്ക്</span> മുതിർന്നവരുടെ അവസ്ഥയെക്കുറിച്ച് വിശദമായ വിവരങ്ങൾ ലഭിക്കുന്നതിലൂടെ മനസ്സമാധാനം ലഭിക്കുന്നു.</div></li>
+                        </ul>
+                    </div>
+                    <div class="text-center">
+                        <div class="chart-container">
+                               <canvas id="efficiencyChart"></canvas>
+                        </div>
+                        <p class="mt-4 font-medium text-slate-700">റിപ്പോർട്ട് എഴുതുന്ന സമയം <span class="text-blue-600 font-bold text-xl">90%</span>-ൽ കൂടുതലായി കുറയ്ക്കുക,<br>കൂടാതെ എല്ലാ ഡാറ്റയുടെയും <span class="text-green-600 font-bold text-xl">100%</span> ഒരു നഷ്ടവുമില്ലാതെ ശേഖരിക്കുക.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
 
-        <section id="how-it-works" class="py-16 md:py-24 bg-white">
-            <div class="container mx-auto px-6">
-                <div class="text-center mb-12">
-                    <h2 class="text-3xl md:text-4xl font-bold text-slate-900">ഉപയോഗിക്കാൻ എളുപ്പമാണ്</h2>
-                    <p class="mt-4 max-w-2xl mx-auto text-slate-600">സങ്കീർണ്ണമായ സിസ്റ്റം പരിശീലനം ആവശ്യമില്ല. ആർക്കും ഒരു ബട്ടൺ ഉപയോഗിച്ച് സ്മാർട്ട് പരിചരണം ആരംഭിക്കാം. കൂടുതൽ വിവരങ്ങൾക്കായി ഓരോ ഘട്ടത്തിലും ക്ലിക്ക് ചെയ്യുക.</p>
-                </div>
-                <div class="flex flex-col md:flex-row justify-center items-start gap-4">
-                    <div id="step-1" class="step-item active w-full md:w-1/4 p-4 border-2 border-slate-200 rounded-lg text-center cursor-pointer transition">
-                        <div class="text-4xl mb-2">1️⃣</div>
-                        <h3 class="font-bold">ബട്ടൺ ക്ലിക്ക് ചെയ്യുക</h3>
-                    </div>
-                    <div id="step-2" class="step-item w-full md:w-1/4 p-4 border-2 border-slate-200 rounded-lg text-center cursor-pointer transition">
-                        <div class="text-4xl mb-2">2️⃣</div>
-                        <h3 class="font-bold">AI ഓട്ടോമാറ്റിക് വിശകലനം</h3>
-                    </div>
-                    <div id="step-3" class="step-item w-full md:w-1/4 p-4 border-2 border-slate-200 rounded-lg text-center cursor-pointer transition">
-                        <div class="text-4xl mb-2">3️⃣</div>
-                        <h3 class="font-bold">റിപ്പോർട്ട് പങ്കിടുക</h3>
-                    </div>
-                </div>
-                <div class="mt-8 max-w-2xl mx-auto">
-                    <div id="content-1" class="step-content active bg-blue-50 p-6 rounded-lg">
-                        <h4 class="font-bold text-lg text-blue-900">പരിചരണം തുടങ്ങുമ്പോൾ തന്നെ സംഭാഷണങ്ങൾ ഓട്ടോമാറ്റിക്കായി റെക്കോർഡ് ചെയ്യുക</h4>
-                        <p class="mt-2 text-slate-700">പരിചരണ സേവനം ആരംഭിക്കുമ്പോൾ ടാബ്ലെറ്റിലെ ബട്ടൺ ഒരു തവണ അമർത്തിയാൽ മതി, എല്ലാ സംഭാഷണങ്ങളും ഓട്ടോമാറ്റിക്കായി റെക്കോർഡ് ചെയ്യുകയും ടെക്സ്റ്റ് ആയി മാറുകയും ചെയ്യും. കൈകൊണ്ട് എഴുതുന്നതിന്റെ ബുദ്ധിമുട്ടിൽ നിന്നും വിവരങ്ങൾ നഷ്ടപ്പെടുന്നതിലുള്ള ആശങ്കയിൽ നിന്നും വിട പറയുക.</p>
-                    </div>
-                    <div id="content-2" class="step-content bg-blue-50 p-6 rounded-lg">
-                        <h4 class="font-bold text-lg text-blue-900">ആരോഗ്യം, വികാരങ്ങൾ, മരുന്ന് എന്നിവ ഉൾപ്പെടെയുള്ള ഡാറ്റ തത്സമയം എക്‌സ്‌ട്രാക്റ്റ് ചെയ്യുക</h4>
-                        <p class="mt-2 text-slate-700">കെയർബോമിന്റെ AI സംഭാഷണങ്ങൾ തത്സമയം വിശകലനം ചെയ്ത്, മുതിർന്നവരുടെ ആരോഗ്യനില, വികാരങ്ങളിലുള്ള മാറ്റങ്ങൾ, മരുന്ന് കഴിച്ചോ ഇല്ലയോ, ഭക്ഷണം എന്നിവയുൾപ്പെടെ 11 പ്രധാന വിവരങ്ങൾ കൃത്യമായി എക്‌സ്‌ട്രാക്റ്റ് ചെയ്യുകയും ചിട്ടപ്പെടുത്തുകയും ചെയ്യുന്നു.</p>
-                    </div>
-                    <div id="content-3" class="step-content bg-blue-50 p-6 rounded-lg">
-                        <h4 class="font-bold text-lg text-blue-900">അഡ്മിനിസ്ട്രേറ്റർമാർക്കും കുടുംബാംഗങ്ങൾക്കും റിപ്പോർട്ടുകൾ ഓട്ടോമാറ്റിക്കായി അയയ്ക്കുക</h4>
-                        <p class="mt-2 text-slate-700">വിശകലനം ചെയ്ത ഡാറ്റ മുൻകൂട്ടി നിശ്ചയിച്ച ഫോർമാറ്റിൽ ഒരു പ്രൊഫഷണൽ റിപ്പോർട്ടായി ഓട്ടോമാറ്റിക്കായി ജനറേറ്റ് ചെയ്യുകയും ഒരു ക്ലിക്കിലൂടെ അഡ്മിനിസ്ട്രേറ്റർമാർക്കും കുടുംബാംഗങ്ങൾക്കും സുരക്ഷിതമായി അയയ്ക്കുകയും ചെയ്യുന്നു.</p>
-                    </div>
-                </div>
-                <br><br>
-                <div style="display: flex; justify-content: center; align-items: center; width: 100%;">
-                  <img src="https://mnllab.github.io/junctionmed/assets/onebutton_workflow.jpg" alt="കെയർബോം വൺ-ബട്ടൺ സർവീസ് വർക്ക്ഫ്ലോ" style="max-width: 80%; height: auto; display: block; border-radius: 12px; box-shadow: 0 4px 12px rgba(0,0,0,0.3);">
-                </div>    
-            </div>
-        </section>
+        <section id="how-it-works" class="py-16 md:py-24 bg-white">
+            <div class="container mx-auto px-6">
+                <div class="text-center mb-12">
+                    <h2 class="text-3xl md:text-4xl font-bold text-slate-900">ഉപയോഗിക്കാൻ എളുപ്പമാണ്</h2>
+                    <p class="mt-4 max-w-2xl mx-auto text-slate-600">സങ്കീർണ്ണമായ സിസ്റ്റം പരിശീലനം ആവശ്യമില്ല. ആർക്കും ഒരു ബട്ടൺ ഉപയോഗിച്ച് സ്മാർട്ട് പരിചരണം ആരംഭിക്കാം. കൂടുതൽ വിവരങ്ങൾക്കായി ഓരോ ഘട്ടത്തിലും ക്ലിക്ക് ചെയ്യുക.</p>
+                </div>
+                <div class="flex flex-col md:flex-row justify-center items-start gap-4">
+                    <div id="step-1" class="step-item active w-full md:w-1/4 p-4 border-2 border-slate-200 rounded-lg text-center cursor-pointer transition">
+                        <div class="text-4xl mb-2">1️⃣</div>
+                        <h3 class="font-bold">ബട്ടൺ ക്ലിക്ക് ചെയ്യുക</h3>
+                    </div>
+                    <div id="step-2" class="step-item w-full md:w-1/4 p-4 border-2 border-slate-200 rounded-lg text-center cursor-pointer transition">
+                        <div class="text-4xl mb-2">2️⃣</div>
+                        <h3 class="font-bold">AI ഓട്ടോമാറ്റിക് വിശകലനം</h3>
+                    </div>
+                    <div id="step-3" class="step-item w-full md:w-1/4 p-4 border-2 border-slate-200 rounded-lg text-center cursor-pointer transition">
+                        <div class="text-4xl mb-2">3️⃣</div>
+                        <h3 class="font-bold">റിപ്പോർട്ട് പങ്കിടുക</h3>
+                    </div>
+                </div>
+                <div class="mt-8 max-w-2xl mx-auto">
+                    <div id="content-1" class="step-content active bg-blue-50 p-6 rounded-lg">
+                        <h4 class="font-bold text-lg text-blue-900">പരിചരണം തുടങ്ങുമ്പോൾ തന്നെ സംഭാഷണങ്ങൾ ഓട്ടോമാറ്റിക്കായി റെക്കോർഡ് ചെയ്യുക</h4>
+                        <p class="mt-2 text-slate-700">പരിചരണ സേവനം ആരംഭിക്കുമ്പോൾ ടാബ്ലെറ്റിലെ ബട്ടൺ ഒരു തവണ അമർത്തിയാൽ മതി, എല്ലാ സംഭാഷണങ്ങളും ഓട്ടോമാറ്റിക്കായി റെക്കോർഡ് ചെയ്യുകയും ടെക്സ്റ്റ് ആയി മാറുകയും ചെയ്യും. കൈകൊണ്ട് എഴുതുന്നതിന്റെ ബുദ്ധിമുട്ടിൽ നിന്നും വിവരങ്ങൾ നഷ്ടപ്പെടുന്നതിലുള്ള ആശങ്കയിൽ നിന്നും വിട പറയുക.</p>
+                    </div>
+                    <div id="content-2" class="step-content bg-blue-50 p-6 rounded-lg">
+                        <h4 class="font-bold text-lg text-blue-900">ആരോഗ്യം, വികാരങ്ങൾ, മരുന്ന് എന്നിവ ഉൾപ്പെടെയുള്ള ഡാറ്റ തത്സമയം എക്‌സ്‌ട്രാക്റ്റ് ചെയ്യുക</h4>
+                        <p class="mt-2 text-slate-700">കെയർബോമിന്റെ AI സംഭാഷണങ്ങൾ തത്സമയം വിശകലനം ചെയ്ത്, മുതിർന്നവരുടെ ആരോഗ്യനില, വികാരങ്ങളിലുള്ള മാറ്റങ്ങൾ, മരുന്ന് കഴിച്ചോ ഇല്ലയോ, ഭക്ഷണം എന്നിവയുൾപ്പെടെ 11 പ്രധാന വിവരങ്ങൾ കൃത്യമായി എക്‌സ്‌ട്രാക്റ്റ് ചെയ്യുകയും ചിട്ടപ്പെടുത്തുകയും ചെയ്യുന്നു.</p>
+                    </div>
+                    <div id="content-3" class="step-content bg-blue-50 p-6 rounded-lg">
+                        <h4 class="font-bold text-lg text-blue-900">അഡ്മിനിസ്ട്രേറ്റർമാർക്കും കുടുംബാംഗങ്ങൾക്കും റിപ്പോർട്ടുകൾ ഓട്ടോമാറ്റിക്കായി അയയ്ക്കുക</h4>
+                        <p class="mt-2 text-slate-700">വിശകലനം ചെയ്ത ഡാറ്റ മുൻകൂട്ടി നിശ്ചയിച്ച ഫോർമാറ്റിൽ ഒരു പ്രൊഫഷണൽ റിപ്പോർട്ടായി ഓട്ടോമാറ്റിക്കായി ജനറേറ്റ് ചെയ്യുകയും ഒരു ക്ലിക്കിലൂടെ അഡ്മിനിസ്ട്രേറ്റർമാർക്കും കുടുംബാംഗങ്ങൾക്കും സുരക്ഷിതമായി അയയ്ക്കുകയും ചെയ്യുന്നു.</p>
+                    </div>
+                </div>
+                <br><br>
+                <div style="display: flex; justify-content: center; align-items: center; width: 100%;">
+                    <img src="https://mnllab.github.io/junctionmed/assets/onebutton_workflow.jpg" alt="കെയർബോം വൺ-ബട്ടൺ സർവീസ് വർക്ക്ഫ്ലോ" style="max-width: 80%; height: auto; display: block; border-radius: 12px; box-shadow: 0 4px 12px rgba(0,0,0,0.3);">
+                </div>  
+            </div>
+        </section>
 
-        <section id="effects" class="py-16 md:py-24">
-            <div class="container mx-auto px-6">
-                <div class="text-center mb-12">
-                    <h2 class="text-3xl md:text-4xl font-bold text-slate-900">വൺ-ബട്ടൺ സ്വീകരിക്കുന്നതിലൂടെയുള്ള പ്രതീക്ഷിക്കുന്ന നേട്ടങ്ങൾ</h2>
-                    <p class="mt-4 max-w-2xl mx-auto text-slate-600">സമയം ലാഭിക്കുന്നതിന് പുറമെ, ഇത് പരിചരണത്തിന്റെ ഗുണനിലവാരം ഉയർത്തുകയും ഉൾപ്പെട്ട എല്ലാവരുടെയും സംതൃപ്തി വർദ്ധിപ്പിക്കുകയും ചെയ്യുന്നു.</p>
-                </div>
-                <div class="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
-                    <div class="bg-white p-6 rounded-xl shadow-lg hover:shadow-xl hover:-translate-y-1 transition-all">
-                        <div class="text-3xl text-blue-600 mb-3">⏱️</div>
-                        <h3 class="text-xl font-bold mb-2">കൂടുതൽ കാര്യക്ഷമമായ ജോലി</h3>
-                        <p class="text-slate-600">റിപ്പോർട്ടിംഗ് സമയം 90% കുറയ്ക്കുകയും 100% ഡാറ്റ ശേഖരിക്കുകയും ചെയ്യുന്നതിലൂടെ, രേഖകളുടെ നഷ്ടം ഒഴിവാക്കുകയും പരിചരിക്കുന്നവരുടെ ജോലി കാര്യക്ഷമത പരമാവധി വർദ്ധിപ്പിക്കുകയും ചെയ്യുന്നു.</p>
-                    </div>
-                    <div class="bg-white p-6 rounded-xl shadow-lg hover:shadow-xl hover:-translate-y-1 transition-all">
-                        <div class="text-3xl text-green-600 mb-3">🛡️</div>
-                        <h3 class="text-xl font-bold mb-2">പരിചരിക്കുന്നവരുടെ സംരക്ഷണം</h3>
-                        <p class="text-slate-600">മുഴുവൻ പരിചരണ പ്രക്രിയയും വസ്തുനിഷ്ഠമായ ഡാറ്റ ഉപയോഗിച്ച് രേഖപ്പെടുത്തുന്നു, ഇത് തർക്കങ്ങൾ ഉണ്ടാകുമ്പോൾ വിശ്വസനീയമായ തെളിവായി ഉപയോഗിക്കാം കൂടാതെ പ്രകടനത്തെ അടിസ്ഥാനമാക്കിയുള്ള പ്രതിഫലവും സാധ്യമാക്കുന്നു.</p>
-                    </div>
-                    <div class="bg-white p-6 rounded-xl shadow-lg hover:shadow-xl hover:-translate-y-1 transition-all">
-                        <div class="text-3xl text-amber-600 mb-3">👴👵</div>
-                        <h3 class="text-xl font-bold mb-2">മുതിർന്നവർക്ക് സൗഹൃദപരമായ UX/UI</h3>
-                        <p class="text-slate-600">വോയ്‌സ് അടിസ്ഥാനമാക്കിയുള്ള ഇന്റർഫേസ് ഡിജിറ്റൽ ഉപകരണങ്ങളുമായി പരിചയമില്ലാത്ത മുതിർന്നവർക്കും എളുപ്പത്തിലും മടിയില്ലാതെയും ഉപയോഗിക്കാൻ സഹായിക്കുന്നു.</p>
-                    </div>
-                    <div class="bg-white p-6 rounded-xl shadow-lg hover:shadow-xl hover:-translate-y-1 transition-all">
-                        <div class="text-3xl text-indigo-600 mb-3">📈</div>
-                        <h3 class="text-xl font-bold mb-2">സ്ഥാപന മൂല്യം വർദ്ധിപ്പിക്കുക</h3>
-                        <p class="text-slate-600">ഡാറ്റാധിഷ്ഠിത, നൂതന പരിചരണ ഇൻഫ്രാസ്ട്രക്ചർ കെട്ടിപ്പടുക്കുന്നതിലൂടെ, സ്ഥാപനത്തിന്റെ മത്സരക്ഷമതയും മൂല്യവും വർദ്ധിപ്പിക്കപ്പെടുന്നു.</p>
-                    </div>
-                </div>
-            </div>
-        </section>
+        <section id="effects" class="py-16 md:py-24">
+            <div class="container mx-auto px-6">
+                <div class="text-center mb-12">
+                    <h2 class="text-3xl md:text-4xl font-bold text-slate-900">വൺ-ബട്ടൺ സ്വീകരിക്കുന്നതിലൂടെയുള്ള പ്രതീക്ഷിക്കുന്ന നേട്ടങ്ങൾ</h2>
+                    <p class="mt-4 max-w-2xl mx-auto text-slate-600">സമയം ലാഭിക്കുന്നതിന് പുറമെ, ഇത് പരിചരണത്തിന്റെ ഗുണനിലവാരം ഉയർത്തുകയും ഉൾപ്പെട്ട എല്ലാവരുടെയും സംതൃപ്തി വർദ്ധിപ്പിക്കുകയും ചെയ്യുന്നു.</p>
+                </div>
+                <div class="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
+                    <div class="bg-white p-6 rounded-xl shadow-lg hover:shadow-xl hover:-translate-y-1 transition-all">
+                        <div class="text-3xl text-blue-600 mb-3">⏱️</div>
+                        <h3 class="text-xl font-bold mb-2">കൂടുതൽ കാര്യക്ഷമമായ ജോലി</h3>
+                        <p class="text-slate-600">റിപ്പോർട്ടിംഗ് സമയം 90% കുറയ്ക്കുകയും 100% ഡാറ്റ ശേഖരിക്കുകയും ചെയ്യുന്നതിലൂടെ, രേഖകളുടെ നഷ്ടം ഒഴിവാക്കുകയും പരിചരിക്കുന്നവരുടെ ജോലി കാര്യക്ഷമത പരമാവധി വർദ്ധിപ്പിക്കുകയും ചെയ്യുന്നു.</p>
+                    </div>
+                    <div class="bg-white p-6 rounded-xl shadow-lg hover:shadow-xl hover:-translate-y-1 transition-all">
+                        <div class="text-3xl text-green-600 mb-3">🛡️</div>
+                        <h3 class="text-xl font-bold mb-2">പരിചരിക്കുന്നവരുടെ സംരക്ഷണം</h3>
+                        <p class="text-slate-600">മുഴുവൻ പരിചരണ പ്രക്രിയയും വസ്തുനിഷ്ഠമായ ഡാറ്റ ഉപയോഗിച്ച് രേഖപ്പെടുത്തുന്നു, ഇത് തർക്കങ്ങൾ ഉണ്ടാകുമ്പോൾ വിശ്വസനീയമായ തെളിവായി ഉപയോഗിക്കാം കൂടാതെ പ്രകടനത്തെ അടിസ്ഥാനമാക്കിയുള്ള പ്രതിഫലവും സാധ്യമാക്കുന്നു.</p>
+                    </div>
+                    <div class="bg-white p-6 rounded-xl shadow-lg hover:shadow-xl hover:-translate-y-1 transition-all">
+                        <div class="text-3xl text-amber-600 mb-3">👴👵</div>
+                        <h3 class="text-xl font-bold mb-2">മുതിർന്നവർക്ക് സൗഹൃദപരമായ UX/UI</h3>
+                        <p class="text-slate-600">വോയ്‌സ് അടിസ്ഥാനമാക്കിയുള്ള ഇന്റർഫേസ് ഡിജിറ്റൽ ഉപകരണങ്ങളുമായി പരിചയമില്ലാത്ത മുതിർന്നവർക്കും എളുപ്പത്തിലും മടിയില്ലാതെയും ഉപയോഗിക്കാൻ സഹായിക്കുന്നു.</p>
+                    </div>
+                    <div class="bg-white p-6 rounded-xl shadow-lg hover:shadow-xl hover:-translate-y-1 transition-all">
+                        <div class="text-3xl text-indigo-600 mb-3">📈</div>
+                        <h3 class="text-xl font-bold mb-2">സ്ഥാപന മൂല്യം വർദ്ധിപ്പിക്കുക</h3>
+                        <p class="text-slate-600">ഡാറ്റാധിഷ്ഠിത, നൂതന പരിചരണ ഇൻഫ്രാസ്ട്രക്ചർ കെട്ടിപ്പടുക്കുന്നതിലൂടെ, സ്ഥാപനത്തിന്റെ മത്സരക്ഷമതയും മൂല്യവും വർദ്ധിപ്പിക്കപ്പെടുന്നു.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
 
-        <section id="reliability" class="py-16 md:py-24 bg-white">
-            <div class="container mx-auto px-6">
-                <div class="text-center mb-12">
-                    <h2 class="text-3xl md:text-4xl font-bold text-slate-900">സാങ്കേതികവിദ്യയും വിശ്വാസ്യതയും</h2>
-                    <p class="mt-4 max-w-3xl mx-auto text-slate-600 font-medium text-blue-800 bg-blue-50 py-3 px-4 rounded-lg">"സ്ഥലത്ത് ഉടനടി ഉപയോഗിക്കാൻ കഴിയുന്ന ഒരു തെളിയിക്കപ്പെട്ട പരിഹാരം."</p>
-                </div>
-                <div class="max-w-4xl mx-auto grid grid-cols-1 md:grid-cols-2 gap-x-12 gap-y-6">
-                    <div class="flex items-start"><span class="text-green-500 text-2xl mr-3 mt-1">✅</span><div><h4 class="font-semibold">ആഭ്യന്തര പരീക്ഷണങ്ങൾ പൂർത്തിയായി</h4><p class="text-sm text-slate-500">വോഞ്ചു സീനിയർ വെൽഫെയർ സെന്റർ, ഗാങ്‌വോൺ മെഡിക്കൽ കോഓപ്പറേറ്റീവ് തുടങ്ങിയ പ്രധാന സ്ഥാപനങ്ങളിൽ പ്രയോഗിച്ചു.</p></div></div>
-                    <div class="flex items-start"><span class="text-green-500 text-2xl mr-3 mt-1">✅</span><div><h4 class="font-semibold">പോളിസി സംയോജനം</h4><p class="text-sm text-slate-500">ഗ്വാങ്‌ജു, ഗാങ്‌വോൺ തുടങ്ങിയ മുനിസിപ്പൽ പ്രോജക്റ്റുകളിൽ സ്വീകരിച്ചു, ആരോഗ്യ, ക്ഷേമ മേഖലകളിൽ പരിശോധിച്ചുറപ്പിച്ചു.</p></div></div>
-                    <div class="flex items-start"><span class="text-green-500 text-2xl mr-3 mt-1">✅</span><div><h4 class="font-semibold">വിദേശ PoC പുരോഗതിയിൽ</h4><p class="text-sm text-slate-500">സിംഗപ്പൂരിലെ സിൽവർ ടൗണുകളുമായും മലേഷ്യയിലെ പ്രാദേശിക പങ്കാളികളുമായും കരാറുകൾ അന്തിമമാക്കി.</p></div></div>
-                    <div class="flex items-start"><span class="text-green-500 text-2xl mr-3 mt-1">✅</span><div><h4 class="font-semibold">ആഗോള വികസനത്തിന് തയ്യാറെടുക്കുന്നു</h4><p class="text-sm text-slate-500">2026 CES ആഗോള പ്രദർശനത്തിൽ പങ്കാളിത്തം ഉറപ്പാക്കി.</p></div></div>
-                    <div class="flex items-start"><span class="text-green-500 text-2xl mr-3 mt-1">✅</span><div><h4 class="font-semibold">സാങ്കേതിക വിശ്വാസ്യത ഉറപ്പാക്കി</h4><p class="text-sm text-slate-500">TIPS-തിരഞ്ഞെടുത്ത കമ്പനി, 30-ൽ അധികം പേറ്റന്റുകളും സർട്ടിഫിക്കേഷനുകളും ഉണ്ട്.</p></div></div>
-                </div>
-            </div>
-        </section>
-    </main>
+        <section id="reliability" class="py-16 md:py-24 bg-white">
+            <div class="container mx-auto px-6">
+                <div class="text-center mb-12">
+                    <h2 class="text-3xl md:text-4xl font-bold text-slate-900">സാങ്കേതികവിദ്യയും വിശ്വാസ്യതയും</h2>
+                    <p class="mt-4 max-w-3xl mx-auto text-slate-600 font-medium text-blue-800 bg-blue-50 py-3 px-4 rounded-lg">"സ്ഥലത്ത് ഉടനടി ഉപയോഗിക്കാൻ കഴിയുന്ന ഒരു തെളിയിക്കപ്പെട്ട പരിഹാരം."</p>
+                </div>
+                <div class="max-w-4xl mx-auto grid grid-cols-1 md:grid-cols-2 gap-x-12 gap-y-6">
+                    <div class="flex items-start"><span class="text-green-500 text-2xl mr-3 mt-1">✅</span><div><h4 class="font-semibold">ആഭ്യന്തര പരീക്ഷണങ്ങൾ പൂർത്തിയായി</h4><p class="text-sm text-slate-500">വോഞ്ചു സീനിയർ വെൽഫെയർ സെന്റർ, ഗാങ്‌വോൺ മെഡിക്കൽ കോഓപ്പറേറ്റീവ് തുടങ്ങിയ പ്രധാന സ്ഥാപനങ്ങളിൽ പ്രയോഗിച്ചു.</p></div></div>
+                    <div class="flex items-start"><span class="text-green-500 text-2xl mr-3 mt-1">✅</span><div><h4 class="font-semibold">പോളിസി സംയോജനം</h4><p class="text-sm text-slate-500">ഗ്വാങ്‌ജു, ഗാങ്‌വോൺ തുടങ്ങിയ മുനിസിപ്പൽ പ്രോജക്റ്റുകളിൽ സ്വീകരിച്ചു, ആരോഗ്യ, ക്ഷേമ മേഖലകളിൽ പരിശോധിച്ചുറപ്പിച്ചു.</p></div></div>
+                    <div class="flex items-start"><span class="text-green-500 text-2xl mr-3 mt-1">✅</span><div><h4 class="font-semibold">വിദേശ PoC പുരോഗതിയിൽ</h4><p class="text-sm text-slate-500">സിംഗപ്പൂരിലെ സിൽവർ ടൗണുകളുമായും മലേഷ്യയിലെ പ്രാദേശിക പങ്കാളികളുമായും കരാറുകൾ അന്തിമമാക്കി.</p></div></div>
+                    <div class="flex items-start"><span class="text-green-500 text-2xl mr-3 mt-1">✅</span><div><h4 class="font-semibold">ആഗോള വികസനത്തിന് തയ്യാറെടുക്കുന്നു</h4><p class="text-sm text-slate-500">2026 CES ആഗോള പ്രദർശനത്തിൽ പങ്കാളിത്തം ഉറപ്പാക്കി.</p></div></div>
+                    <div class="flex items-start"><span class="text-green-500 text-2xl mr-3 mt-1">✅</span><div><h4 class="font-semibold">സാങ്കേതിക വിശ്വാസ്യത ഉറപ്പാക്കി</h4><p class="text-sm text-slate-500">TIPS-തിരഞ്ഞെടുത്ത കമ്പനി, 30-ൽ അധികം പേറ്റന്റുകളും സർട്ടിഫിക്കേഷനുകളും ഉണ്ട്.</p></div></div>
+                </div>
+            </div>
+        </section>
+    </main>
 
-    <footer class="bg-slate-800 text-white">
-        <div class="container mx-auto px-6 py-8 text-center">
-            <h4 class="font-bold text-lg mb-2">Junction Med Co., Ltd.</h4>
-            <p class="text-sm text-slate-400">പ്രധാന ഓഫീസ്: 4th Floor, 130 Beodeul 1-gil, Namsan-myeon, Chuncheon-si, Gangwon-do, South Korea</p>
-            <p class="text-sm text-slate-400">CEO: Park Ji-min</p>
-            <p class="text-sm text-slate-400">ബിസിനസ് രജിസ്ട്രേഷൻ നമ്പർ: 440-86-02331</p>
-            <p class="text-sm text-slate-400 mt-2">അന്വേഷണങ്ങൾ: +82-2-6951-2788</p>
-            <p class="text-xs text-slate-500 mt-4">പകർപ്പവകാശം 2024 Junction Med Co., Ltd. എല്ലാ അവകാശങ്ങളും നിക്ഷിപ്തം</p>
-        </div>
-    </footer>
+    <footer class="bg-slate-800 text-white">
+        <div class="container mx-auto px-6 py-8 text-center">
+            <h4 class="font-bold text-lg mb-2">Junction Med Co., Ltd.</h4>
+            <p class="text-sm text-slate-400">പ്രധാന ഓഫീസ്: 4th Floor, 130 Beodeul 1-gil, Namsan-myeon, Chuncheon-si, Gangwon-do, South Korea</p>
+            <p class="text-sm text-slate-400">CEO: Park Ji-min</p>
+            <p class="text-sm text-slate-400">ബിസിനസ് രജിസ്ട്രേഷൻ നമ്പർ: 440-86-02331</p>
+            <p class="text-sm text-slate-400 mt-2">അന്വേഷണങ്ങൾ: +82-2-6951-2788</p>
+            <p class="text-xs text-slate-500 mt-4">പകർപ്പവകാശം 2024 Junction Med Co., Ltd. എല്ലാ അവകാശങ്ങളും നിക്ഷിപ്തം</p>
+        </div>
+    </footer>
 
 <script>
 document.addEventListener('DOMContentLoaded', () => {
 
-    const mobileMenuButton = document.getElementById('mobile-menu-button');
-    const mobileMenu = document.getElementById('mobile-menu');
-    mobileMenuButton.addEventListener('click', () => {
-        mobileMenu.classList.toggle('hidden');
-    });
+    const mobileMenuButton = document.getElementById('mobile-menu-button');
+    const mobileMenu = document.getElementById('mobile-menu');
+    mobileMenuButton.addEventListener('click', () => {
+        mobileMenu.classList.toggle('hidden');
+    });
 
-    const ctx = document.getElementById('efficiencyChart').getContext('2d');
-    const efficiencyChart = new Chart(ctx, {
-        type: 'doughnut',
-        data: {
-            labels: ['റിപ്പോർട്ടുകൾക്കായി ലാഭിച്ച സമയം', 'യഥാർത്ഥ റിപ്പോർട്ടിംഗ് സമയം'],
-            datasets: [{
-                label: 'ജോലിയുടെ സമയ-ക്ഷമത',
-                data: [90, 10],
-                backgroundColor: [
-                    '#3b82f6',
-                    '#e5e7eb'
-                ],
-                borderColor: [
-                    '#ffffff',
-                    '#ffffff'
-                ],
-                borderWidth: 2
-            }]
-        },
-        options: {
-            responsive: true,
-            maintainAspectRatio: false,
-            plugins: {
-                legend: {
-                    position: 'bottom',
-                },
-                tooltip: {
-                    callbacks: {
-                        label: function(context) {
-                            let label = context.label || '';
-                            if (label) {
-                                label += ': ';
-                            }
-                            if (context.parsed !== null) {
-                                label += context.parsed + '%';
-                            }
-                            return label;
-                        }
-                    }
-                }
-            },
-            cutout: '70%'
-        }
-    });
-    
-    const steps = document.querySelectorAll('.step-item');
-    const stepContents = document.querySelectorAll('.step-content');
+    const ctx = document.getElementById('efficiencyChart').getContext('2d');
+    const efficiencyChart = new Chart(ctx, {
+        type: 'doughnut',
+        data: {
+            labels: ['റിപ്പോർട്ടുകൾക്കായി ലാഭിച്ച സമയം', 'യഥാർത്ഥ റിപ്പോർട്ടിംഗ് സമയം'],
+            datasets: [{
+                label: 'ജോലിയുടെ സമയ-ക്ഷമത',
+                data: [90, 10],
+                backgroundColor: [
+                    '#3b82f6',
+                    '#e5e7eb'
+                ],
+                borderColor: [
+                    '#ffffff',
+                    '#ffffff'
+                ],
+                borderWidth: 2
+            }]
+        },
+        options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            plugins: {
+                legend: {
+                    position: 'bottom',
+                },
+                tooltip: {
+                    callbacks: {
+                        label: function(context) {
+                            let label = context.label || '';
+                            if (label) {
+                                label += ': ';
+                            }
+                            if (context.parsed !== null) {
+                                label += context.parsed + '%';
+                            }
+                            return label;
+                        }
+                    }
+                }
+            },
+            cutout: '70%'
+        }
+    });
 
-    steps.forEach(step => {
-        step.addEventListener('click', () => {
-            const targetId = step.id.split('-')[1];
+    const steps = document.querySelectorAll('.step-item');
+    const stepContents = document.querySelectorAll('.step-content');
 
-            steps.forEach(s => s.classList.remove('active'));
-            step.classList.add('active');
+    steps.forEach(step => {
+        step.addEventListener('click', () => {
+            const targetId = step.id.split('-')[1];
 
-            stepContents.forEach(c => {
-                c.classList.remove('active');
-                if (c.id === `content-${targetId}`) {
-                    c.classList.add('active');
-                }
-            });
-        });
-    });
+            steps.forEach(s => s.classList.remove('active'));
+            step.classList.add('active');
 
-    const sections = document.querySelectorAll('section');
-    const navLinks = document.querySelectorAll('.nav-link');
-    const header = document.getElementById('header');
-    
-    const observerOptions = {
-      root: null,
-      rootMargin: `-${header.offsetHeight}px 0px 0px 0px`,
-      threshold: 0.4
-    };
+            stepContents.forEach(c => {
+                c.classList.remove('active');
+                if (c.id === `content-${targetId}`) {
+                    c.classList.add('active');
+                }
+            });
+        });
+    });
 
-    const observer = new IntersectionObserver((entries, observer) => {
-      entries.forEach(entry => {
-        if (entry.isIntersecting) {
-          navLinks.forEach(link => {
-            link.classList.remove('active');
-            if (link.getAttribute('href').substring(1) === entry.target.id) {
-              link.classList.add('active');
-            }
-          });
-        }
-      });
-    }, observerOptions);
+    const sections = document.querySelectorAll('section');
+    const navLinks = document.querySelectorAll('.nav-link');
+    const header = document.getElementById('header');
 
-    sections.forEach(section => {
-      observer.observe(section);
-    });
+    const observerOptions = {
+      root: null,
+      rootMargin: `-${header.offsetHeight}px 0px 0px 0px`,
+      threshold: 0.4
+    };
+
+    const observer = new IntersectionObserver((entries, observer) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          navLinks.forEach(link => {
+            link.classList.remove('active');
+            if (link.getAttribute('href').substring(1) === entry.target.id) {
+              link.classList.add('active');
+            }
+          });
+        }
+      });
+    }, observerOptions);
+
+    sections.forEach(section => {
+      observer.observe(section);
+    });
 });
 </script>
 </body>
