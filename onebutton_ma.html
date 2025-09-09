@@ -1,0 +1,289 @@
+<!DOCTYPE html>
+<html lang="ms" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CareBOM One-Button - Penyelesaian Automasi Penjagaan Warga Emas</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;700;900&display=swap" rel="stylesheet">
+    <style>
+        body { font-family: 'Noto Sans KR', sans-serif; }
+        .nav-link.active { color: #2563eb; font-weight: 700; }
+        .step-item.active { border-color: #2563eb; background-color: #eff6ff; }
+        .step-content { display: none; }
+        .step-content.active { display: block; }
+        .chart-container { position: relative; width: 100%; max-width: 400px; margin-left: auto; margin-right: auto; height: 300px; max-height: 400px; }
+        @media (min-width: 768px) { .chart-container { height: 350px; } }
+    </style>
+</head>
+<body class="bg-slate-50 text-slate-800">
+
+    <header id="header" class="bg-white/80 backdrop-blur-lg fixed top-0 left-0 right-0 z-50 shadow-sm">
+        <div class="container mx-auto px-6 py-3 flex justify-between items-center">
+            <a href="#hero" class="text-xl font-bold text-blue-800">CareBOM One-Button</a>
+            <nav class="hidden md:flex space-x-8">
+                <a href="#solution" class="nav-link text-slate-600 hover:text-blue-600 transition-colors">Penyelesaian</a>
+                <a href="#how-it-works" class="nav-link text-slate-600 hover:text-blue-600 transition-colors">Cara Ia Berfungsi</a>
+                <a href="#effects" class="nav-link text-slate-600 hover:text-blue-600 transition-colors">Manfaat</a>
+                <a href="#reliability" class="nav-link text-slate-600 hover:text-blue-600 transition-colors">Kebolehpercayaan</a>
+            </nav>
+            <button id="mobile-menu-button" class="md:hidden">
+                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-7 6h7"></path></svg>
+            </button>
+        </div>
+        <div id="mobile-menu" class="hidden md:hidden px-6 pb-4">
+            <a href="#solution" class="block py-2 text-slate-600 hover:text-blue-600">Penyelesaian</a>
+            <a href="#how-it-works" class="block py-2 text-slate-600 hover:text-blue-600">Cara Ia Berfungsi</a>
+            <a href="#effects" class="block py-2 text-slate-600 hover:text-blue-600">Manfaat</a>
+            <a href="#reliability" class="block py-2 text-slate-600 hover:text-blue-600">Kebolehpercayaan</a>
+        </div>
+    </header>
+
+    <main>
+        <section id="hero" class="bg-white pt-24 pb-16 md:pt-32 md:pb-24">
+            <div class="container mx-auto px-6 text-center">
+                <h1 class="text-4xl md:text-6xl font-extrabold text-blue-900 leading-tight">
+                    Penyelesaian Automasi Penjagaan Warga Emas<br>dengan Hanya Satu Butang
+                </h1>
+                <p class="mt-4 text-lg md:text-2xl font-semibold text-blue-800">Care simple, Care smart</p>
+                <p class="mt-6 max-w-3xl mx-auto text-base md:text-lg text-slate-600">
+                    CareBOM One-Button menggunakan AI untuk merekod dan menganalisis perbualan antara warga emas dan penjaga secara automatik, menyelesaikan penulisan laporan dalam satu langkah. Bebaskan diri daripada tugas pentadbiran yang membosankan dan tumpukan pada nilai sebenar penjagaan.
+                </p>
+            </div>
+        </section>
+
+        <section id="solution" class="py-16 md:py-24">
+            <div class="container mx-auto px-6">
+                <div class="text-center mb-12">
+                    <h2 class="text-3xl md:text-4xl font-bold text-slate-900">Rekod Tanpa Cacat, Penjagaan Berterusan</h2>
+                    <p class="mt-4 max-w-2xl mx-auto text-slate-600">‘Laporan Profesional Khusus Institusi’ CareBOM lebih daripada sekadar rekod; ia adalah alat praktikal untuk pengurusan institusi dan penjagaan profesional.</p>
+                </div>
+
+                <div class="grid md:grid-cols-2 gap-8 items-center">
+                    <div class="bg-white p-8 rounded-xl shadow-lg">
+                        <h3 class="text-2xl font-bold text-blue-900 mb-4">Ciri-ciri Utama</h3>
+                        <p class="text-slate-600 mb-6">
+                            <span class="font-semibold text-blue-700">Perkhidmatan Satu Butang</span> secara automatik merekod dan menganalisis perbualan antara warga emas dan penjaga, mengekstrak 11 maklumat penting, termasuk status kesihatan, emosi, pengambilan ubat, dan makanan. Data yang dihasilkan disusun ke dalam format laporan yang diperlukan oleh institusi dengan hanya satu klik butang dan segera dihantar kepada pentadbir dan ahli keluarga.
+                        </p>
+                         <ul class="space-y-3 text-slate-700">
+                            <li class="flex items-start"><span class="text-blue-500 font-bold mr-3">✓</span><div><span class="font-bold">Penjaga</span> dapat mengurangkan masa pentadbiran dan menumpukan pada tugas utama mereka.</div></li>
+                            <li class="flex items-start"><span class="text-blue-500 font-bold mr-3">✓</span><div><span class="font-bold">Pentadbir</span> dapat mengurus institusi dengan cekap dengan memeriksa maklumat yang boleh dipercayai secara masa nyata.</div></li>
+                            <li class="flex items-start"><span class="text-blue-500 font-bold mr-3">✓</span><div><span class="font-bold">Ahli keluarga</span> dapat menerima kemas kini terperinci mengenai keadaan warga emas mereka, memberikan ketenangan fikiran.</div></li>
+                        </ul>
+                    </div>
+                    <div class="text-center">
+                        <div class="chart-container">
+                               <canvas id="efficiencyChart"></canvas>
+                        </div>
+                        <p class="mt-4 font-medium text-slate-700">Kurangkan masa menulis laporan sebanyak lebih <span class="text-blue-600 font-bold text-xl">90%</span>,<br> dan kumpul <span class="text-green-600 font-bold text-xl">100%</span> data tanpa kehilangan apa-apa.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="how-it-works" class="py-16 md:py-24 bg-white">
+            <div class="container mx-auto px-6">
+                <div class="text-center mb-12">
+                    <h2 class="text-3xl md:text-4xl font-bold text-slate-900">Cara Penggunaan yang Mudah</h2>
+                    <p class="mt-4 max-w-2xl mx-auto text-slate-600">Tiada latihan sistem yang rumit diperlukan. Sesiapa sahaja boleh memulakan penjagaan pintar dengan hanya satu butang. Klik setiap langkah untuk penjelasan terperinci.</p>
+                </div>
+                <div class="flex flex-col md:flex-row justify-center items-start gap-4">
+                    <div id="step-1" class="step-item active w-full md:w-1/4 p-4 border-2 border-slate-200 rounded-lg text-center cursor-pointer transition">
+                        <div class="text-4xl mb-2">1️⃣</div>
+                        <h3 class="font-bold">Klik Butang</h3>
+                    </div>
+                    <div id="step-2" class="step-item w-full md:w-1/4 p-4 border-2 border-slate-200 rounded-lg text-center cursor-pointer transition">
+                        <div class="text-4xl mb-2">2️⃣</div>
+                        <h3 class="font-bold">Analisis Automatik AI</h3>
+                    </div>
+                    <div id="step-3" class="step-item w-full md:w-1/4 p-4 border-2 border-slate-200 rounded-lg text-center cursor-pointer transition">
+                        <div class="text-4xl mb-2">3️⃣</div>
+                        <h3 class="font-bold">Perkongsian Laporan</h3>
+                    </div>
+                </div>
+                <div class="mt-8 max-w-2xl mx-auto">
+                    <div id="content-1" class="step-content active bg-blue-50 p-6 rounded-lg">
+                        <h4 class="font-bold text-lg text-blue-900">Rakaman Perbualan Automatik pada Permulaan Penjagaan</h4>
+                        <p class="mt-2 text-slate-700">Apabila anda memulakan perkhidmatan penjagaan, hanya tekan butang pada tablet sekali, dan semua perbualan akan dirakam secara automatik dan ditukar menjadi teks. Hilanglah kerisauan tentang merekod secara manual dan kebimbangan data yang hilang.</p>
+                    </div>
+                    <div id="content-2" class="step-content bg-blue-50 p-6 rounded-lg">
+                        <h4 class="font-bold text-lg text-blue-900">Pengekstrakan Data Masa Nyata untuk Kesihatan, Emosi, Pengambilan Ubat, dan Lain-lain</h4>
+                        <p class="mt-2 text-slate-700">AI CareBOM menganalisis kandungan perbualan secara masa nyata, mengekstrak dan menyusun 11 maklumat penting tentang status kesihatan warga emas, perubahan emosi, status pengambilan ubat, dan makanan secara tepat.</p>
+                    </div>
+                    <div id="content-3" class="step-content bg-blue-50 p-6 rounded-lg">
+                        <h4 class="font-bold text-lg text-blue-900">Penghantaran Laporan Automatik kepada Pentadbir dan Ahli Keluarga</h4>
+                        <p class="mt-2 text-slate-700">Data yang dianalisis secara automatik dijana menjadi laporan profesional dalam format yang telah ditetapkan dan dihantar dengan selamat kepada pentadbir institusi dan ahli keluarga dengan hanya satu klik.</p>
+                    </div>
+                </div>
+                <br><br>
+                <div style="display: flex; justify-content: center; align-items: center; width: 100%;">
+                    <img src="https://mnllab.github.io/junctionmed/assets/onebutton_workflow.jpg" alt="Carta Alir Perkhidmatan CareBOM One-Button" style="max-width: 80%; height: auto; display: block; border-radius: 12px; box-shadow: 0 4px 12px rgba(0,0,0,0.3);">
+                </div>  
+            </div>
+        </section>
+
+        <section id="effects" class="py-16 md:py-24">
+            <div class="container mx-auto px-6">
+                <div class="text-center mb-12">
+                    <h2 class="text-3xl md:text-4xl font-bold text-slate-900">Manfaat yang Diharapkan daripada Penggunaan Satu Butang</h2>
+                    <p class="mt-4 max-w-2xl mx-auto text-slate-600">Lebih daripada sekadar menjimatkan masa, ia meningkatkan kualiti penjagaan dan meningkatkan kepuasan bagi semua yang terlibat.</p>
+                </div>
+                <div class="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
+                    <div class="bg-white p-6 rounded-xl shadow-lg hover:shadow-xl hover:-translate-y-1 transition-all">
+                        <div class="text-3xl text-blue-600 mb-3">⏱️</div>
+                        <h3 class="text-xl font-bold mb-2">Kecekapan Kerja Maksimum</h3>
+                        <p class="text-slate-600">Mengurangkan masa laporan sebanyak 90% dan mengumpul 100% data, mencegah kehilangan rekod dan memaksimumkan kecekapan penjaga.</p>
+                    </div>
+                    <div class="bg-white p-6 rounded-xl shadow-lg hover:shadow-xl hover:-translate-y-1 transition-all">
+                        <div class="text-3xl text-green-600 mb-3">🛡️</div>
+                        <h3 class="text-xl font-bold mb-2">Perlindungan Penjaga</h3>
+                        <p class="text-slate-600">Keseluruhan proses penjagaan direkod dengan data objektif, yang boleh berfungsi sebagai bukti yang boleh dipercayai sekiranya berlaku pertikaian dan membolehkan ganjaran berasaskan prestasi.</p>
+                    </div>
+                    <div class="bg-white p-6 rounded-xl shadow-lg hover:shadow-xl hover:-translate-y-1 transition-all">
+                        <div class="text-3xl text-amber-600 mb-3">👴👵</div>
+                        <h3 class="text-xl font-bold mb-2">UX/UI Mesra Warga Emas</h3>
+                        <p class="text-slate-600">Antara muka berasaskan suara membolehkan warga emas yang tidak biasa dengan peranti digital untuk menggunakannya dengan mudah dan tanpa ragu-ragu.</p>
+                    </div>
+                    <div class="bg-white p-6 rounded-xl shadow-lg hover:shadow-xl hover:-translate-y-1 transition-all">
+                        <div class="text-3xl text-indigo-600 mb-3">📈</div>
+                        <h3 class="text-xl font-bold mb-2">Peningkatan Nilai Institusi</h3>
+                        <p class="text-slate-600">Dengan membina infrastruktur penjagaan yang canggih dan didorong data, daya saing dan nilai institusi ditingkatkan.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="reliability" class="py-16 md:py-24 bg-white">
+            <div class="container mx-auto px-6">
+                <div class="text-center mb-12">
+                    <h2 class="text-3xl md:text-4xl font-bold text-slate-900">Teknologi dan Kebolehpercayaan</h2>
+                    <p class="mt-4 max-w-3xl mx-auto text-slate-600 font-medium text-blue-800 bg-blue-50 py-3 px-4 rounded-lg">"Penyelesaian yang terbukti yang boleh digunakan serta-merta di lapangan."</p>
+                </div>
+                <div class="max-w-4xl mx-auto grid grid-cols-1 md:grid-cols-2 gap-x-12 gap-y-6">
+                    <div class="flex items-start"><span class="text-green-500 text-2xl mr-3 mt-1">✅</span><div><h4 class="font-semibold">Ujian Domestik Selesai</h4><p class="text-sm text-slate-500">Telah digunakan di institusi utama seperti Pusat Kebajikan Warga Emas Wonju dan Koperasi Perubatan Gangwon.</p></div></div>
+                    <div class="flex items-start"><span class="text-green-500 text-2xl mr-3 mt-1">✅</span><div><h4 class="font-semibold">Integrasi Dasar</h4><p class="text-sm text-slate-500">Diadaptasi dalam projek perbandaran di Gwangju dan Gangwon, disahkan dalam bidang kesihatan dan kebajikan.</p></div></div>
+                    <div class="flex items-start"><span class="text-green-500 text-2xl mr-3 mt-1">✅</span><div><h4 class="font-semibold">PoC Luar Negara Sedang Berlangsung</h4><p class="text-sm text-slate-500">Perjanjian dimuktamadkan dengan bandar perak di Singapura dan rakan kongsi tempatan di Malaysia.</p></div></div>
+                    <div class="flex items-start"><span class="text-green-500 text-2xl mr-3 mt-1">✅</span><div><h4 class="font-semibold">Bersedia untuk Pengembangan Global</h4><p class="text-sm text-slate-500">Penyertaan disahkan dalam pameran global CES 2026.</p></div></div>
+                    <div class="flex items-start"><span class="text-green-500 text-2xl mr-3 mt-1">✅</span><div><h4 class="font-semibold">Kebolehpercayaan Teknologi Terjamin</h4><p class="text-sm text-slate-500">Syarikat yang dipilih oleh TIPS, memegang lebih 30 paten dan pensijilan.</p></div></div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer class="bg-slate-800 text-white">
+        <div class="container mx-auto px-6 py-8 text-center">
+            <h4 class="font-bold text-lg mb-2">Junction Med Co., Ltd.</h4>
+            <p class="text-sm text-slate-400">Pejabat Utama: Tingkat 4, 130 Beodeul 1-gil, Namsan-myeon, Chuncheon-si, Gangwon-do, Korea Selatan</p>
+            <p class="text-sm text-slate-400">CEO: Park Ji-min</p>
+            <p class="text-sm text-slate-400">Nombor Pendaftaran Perniagaan: 440-86-02331</p>
+            <p class="text-sm text-slate-400 mt-2">Pertanyaan: +82-2-6951-2788</p>
+            <p class="text-xs text-slate-500 mt-4">Hak Cipta 2024 Junction Med Co., Ltd. Hak cipta terpelihara</p>
+        </div>
+    </footer>
+
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+
+    const mobileMenuButton = document.getElementById('mobile-menu-button');
+    const mobileMenu = document.getElementById('mobile-menu');
+    mobileMenuButton.addEventListener('click', () => {
+        mobileMenu.classList.toggle('hidden');
+    });
+
+    const ctx = document.getElementById('efficiencyChart').getContext('2d');
+    const efficiencyChart = new Chart(ctx, {
+        type: 'doughnut',
+        data: {
+            labels: ['Masa yang Dijimatkan untuk Laporan', 'Masa Pelaporan Sebenar'],
+            datasets: [{
+                label: 'Kecekapan Masa Kerja',
+                data: [90, 10],
+                backgroundColor: [
+                    '#3b82f6',
+                    '#e5e7eb'
+                ],
+                borderColor: [
+                    '#ffffff',
+                    '#ffffff'
+                ],
+                borderWidth: 2
+            }]
+        },
+        options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            plugins: {
+                legend: {
+                    position: 'bottom',
+                },
+                tooltip: {
+                    callbacks: {
+                        label: function(context) {
+                            let label = context.label || '';
+                            if (label) {
+                                label += ': ';
+                            }
+                            if (context.parsed !== null) {
+                                label += context.parsed + '%';
+                            }
+                            return label;
+                        }
+                    }
+                }
+            },
+            cutout: '70%'
+        }
+    });
+    
+    const steps = document.querySelectorAll('.step-item');
+    const stepContents = document.querySelectorAll('.step-content');
+
+    steps.forEach(step => {
+        step.addEventListener('click', () => {
+            const targetId = step.id.split('-')[1];
+
+            steps.forEach(s => s.classList.remove('active'));
+            step.classList.add('active');
+
+            stepContents.forEach(c => {
+                c.classList.remove('active');
+                if (c.id === `content-${targetId}`) {
+                    c.classList.add('active');
+                }
+            });
+        });
+    });
+
+    const sections = document.querySelectorAll('section');
+    const navLinks = document.querySelectorAll('.nav-link');
+    const header = document.getElementById('header');
+    
+    const observerOptions = {
+      root: null,
+      rootMargin: `-${header.offsetHeight}px 0px 0px 0px`,
+      threshold: 0.4
+    };
+
+    const observer = new IntersectionObserver((entries, observer) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          navLinks.forEach(link => {
+            link.classList.remove('active');
+            if (link.getAttribute('href').substring(1) === entry.target.id) {
+              link.classList.add('active');
+            }
+          });
+        }
+      });
+    }, observerOptions);
+
+    sections.forEach(section => {
+      observer.observe(section);
+    });
+});
+</script>
+</body>
+</html>
