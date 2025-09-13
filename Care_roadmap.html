@@ -1,0 +1,297 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>시니어 돌봄 시스템 레벨별 분류 (개선판)</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap');
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f8fafc;
+            color: #1f2937;
+        }
+        .level-container {
+            position: relative;
+            display: grid;
+            gap: 2rem;
+            grid-template-columns: repeat(1, 1fr);
+        }
+        @media (min-width: 768px) {
+            .level-container {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+        .level-card {
+            width: 100%;
+            padding: 2rem;
+            border-radius: 1rem;
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+            transition: transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
+            position: relative;
+        }
+        .level-card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+        }
+        .level-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            border-radius: 1rem;
+            z-index: -1;
+            opacity: 0.1;
+        }
+        .level-0-bg { background-color: #e2e8f0; }
+        .level-1-bg { background-color: #b9e0f0; }
+        .level-2-bg { background-color: #a5d8b6; }
+        .level-3-bg { background-color: #d1b8e4; }
+        .level-4-bg { background-color: #f5c49e; }
+        .level-5-bg { background-color: #f7a3a3; }
+        
+        .level-number {
+            font-size: 2.25rem;
+            font-weight: 700;
+            color: white;
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: absolute;
+            top: -30px;
+            left: 50%;
+            transform: translateX(-50%);
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+        }
+        .level-0-circle { background-color: #4b5563; }
+        .level-1-circle { background-color: #03a9f4; }
+        .level-2-circle { background-color: #4caf50; }
+        .level-3-circle { background-color: #9c27b0; }
+        .level-4-circle { background-color: #ff9800; }
+        .level-5-circle { background-color: #e53935; }
+
+        .info-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1rem;
+        }
+        .info-item {
+            display: flex;
+            flex-direction: column;
+            gap: 0.25rem;
+        }
+        .info-title {
+            font-weight: 600;
+            color: #4b5563;
+        }
+    </style>
+</head>
+<body class="p-6 md:p-10 flex justify-center items-center min-h-screen">
+
+    <div class="max-w-7xl mx-auto">
+        <h1 class="text-3xl md:text-4xl font-bold text-center mb-10 text-gray-800">
+            시니어 돌봄 시스템 레벨별 분류
+        </h1>
+        <div class="level-container">
+            <!-- Level 0 -->
+            <div class="level-card level-0-bg">
+                <div class="level-number level-0-circle">0</div>
+                <h2 class="text-2xl font-bold text-gray-800 mt-8 mb-4 text-center">Level 0: Manual Entry</h2>
+                <div class="info-grid">
+                    <div class="info-item">
+                        <span class="info-title">기술 스택 & 데이터</span>
+                        <p class="text-sm">전산 수기 입력</p>
+                    </div>
+                    <div class="info-item">
+                        <span class="info-title">인력 역할</span>
+                        <p class="text-sm">Manual Operator (사람 전담)</p>
+                    </div>
+                    <div class="info-item">
+                        <span class="info-title">적용 기술 요소</span>
+                        <p class="text-sm">- 전산 입력 SW<br>- 수기 기록, 행정 보고용 DB</p>
+                    </div>
+                    <div class="info-item">
+                        <span class="info-title">핵심 기능</span>
+                        <p class="text-sm">- 수기 기록, 행정 보고</p>
+                    </div>
+                    <div class="info-item">
+                        <span class="info-title">단계적 의미</span>
+                        <p class="text-sm">행정 기록 단계</p>
+                    </div>
+                    <div class="info-item">
+                        <span class="info-title">기관/가족 가치</span>
+                        <p class="text-sm">- 기관: 행정 효율, 최소 전산화<br>- 가족: 체감 낮음</p>
+                    </div>
+                </div>
+            </div>
+    
+            <!-- Level 1 -->
+            <div class="level-card level-1-bg">
+                <div class="level-number level-1-circle">1</div>
+                <h2 class="text-2xl font-bold text-gray-800 mt-8 mb-4 text-center">Level 1: CareBom One-Button</h2>
+                <div class="info-grid">
+                    <div class="info-item">
+                        <span class="info-title">기술 스택 & 데이터</span>
+                        <p class="text-sm">음성 기반 AI 기록·분석</p>
+                    </div>
+                    <div class="info-item">
+                        <span class="info-title">인력 역할</span>
+                        <p class="text-sm">AI-Assisted Caregiver (AI 보조)</p>
+                    </div>
+                    <div class="info-item">
+                        <span class="info-title">적용 기술 요소</span>
+                        <p class="text-sm">- STT (음성→텍스트)<br>- NLP (의도/구조화)<br>- 요약/리포트 생성 AI</p>
+                    </div>
+                    <div class="info-item">
+                        <span class="info-title">핵심 기능</span>
+                        <p class="text-sm">- 돌봄 대화 자동 기록<br>- 요양일지·보고서 자동 생성<br>- 가족 리포트 공유<br>- 기본 정서 돌봄</p>
+                    </div>
+                    <div class="info-item">
+                        <span class="info-title">단계적 의미</span>
+                        <p class="text-sm">기록·보고 자동화 단계</p>
+                    </div>
+                    <div class="info-item">
+                        <span class="info-title">기관/가족 가치</span>
+                        <p class="text-sm">- 기관: 보고 표준화, 관리 효율<br>- 가족: 기록 부담 감소, 정서적 위안</p>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Level 2 -->
+            <div class="level-card level-2-bg">
+                <div class="level-number level-2-circle">2</div>
+                <h2 class="text-2xl font-bold text-gray-800 mt-8 mb-4 text-center">Level 2</h2>
+                <div class="info-grid">
+                    <div class="info-item">
+                        <span class="info-title">기술 스택 & 데이터</span>
+                        <p class="text-sm">AIoT 센서·웨어러블·엣지</p>
+                    </div>
+                    <div class="info-item">
+                        <span class="info-title">인력 역할</span>
+                        <p class="text-sm">Collaborative Partner (AI+사람 공동)</p>
+                    </div>
+                    <div class="info-item">
+                        <span class="info-title">적용 기술 요소</span>
+                        <p class="text-sm">- IoT 센서 (Vital/환경)<br>- Wearable Devices<br>- Edge AI 분석</p>
+                    </div>
+                    <div class="info-item">
+                        <span class="info-title">핵심 기능</span>
+                        <p class="text-sm">- Vital·환경 데이터 자동 수집<br>- 실시간 이벤트 알림<br>- Copilot: 관리자 질문→분석·근거 제공<br>- 가족 맞춤 알람·대시보드</p>
+                    </div>
+                    <div class="info-item">
+                        <span class="info-title">단계적 의미</span>
+                        <p class="text-sm">보건 관리 단계</p>
+                    </div>
+                    <div class="info-item">
+                        <span class="info-title">기관/가족 가치</span>
+                        <p class="text-sm">- 기관: 위험군 예측, 리스크 관리<br>- 가족: 상태 대시보드, 생활 안정</p>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Level 3 -->
+            <div class="level-card level-3-bg">
+                <div class="level-number level-3-circle">3</div>
+                <h2 class="text-2xl font-bold text-gray-800 mt-8 mb-4 text-center">Level 3</h2>
+                <div class="info-grid">
+                    <div class="info-item">
+                        <span class="info-title">기술 스택 & 데이터</span>
+                        <p class="text-sm">멀티모달 AI (텍스트·음성·행동·생체)</p>
+                    </div>
+                    <div class="info-item">
+                        <span class="info-title">인력 역할</span>
+                        <p class="text-sm">Supervising Partner (AI 주도, 사람 감독)</p>
+                    </div>
+                    <div class="info-item">
+                        <span class="info-title">적용 기술 요소</span>
+                        <p class="text-sm">- Multimodal AI<br>- Emotion Recognition<br>- Vision AI (행동 분석)</p>
+                    </div>
+                    <div class="info-item">
+                        <span class="info-title">핵심 기능</span>
+                        <p class="text-sm">- 정서 돌봄 심화 (우울·불안·인지 저하 감지)<br>- 행동 패턴 기반 선제 경보<br>- 의료 연계 리포트 생성 및 전달<br>- 가족 대상 조기 의료 알림</p>
+                    </div>
+                    <div class="info-item">
+                        <span class="info-title">단계적 의미</span>
+                        <p class="text-sm">의료 연계 단계</p>
+                    </div>
+                    <div class="info-item">
+                        <span class="info-title">기관/가족 가치</span>
+                        <p class="text-sm">- 기관: 정밀 데이터 기반 서비스 질 향상<br>- 가족: 정서적 안정, 의료적 선제 대응</p>
+                    </div>
+                </div>
+            </div>
+    
+            <!-- Level 4 -->
+            <div class="level-card level-4-bg">
+                <div class="level-number level-4-circle">4</div>
+                <h2 class="text-2xl font-bold text-gray-800 mt-8 mb-4 text-center">Level 4: Sovereign AI 플랫폼</h2>
+                <div class="info-grid">
+                    <div class="info-item">
+                        <span class="info-title">기술 스택 & 데이터</span>
+                        <p class="text-sm">Sovereign AI 플랫폼</p>
+                    </div>
+                    <div class="info-item">
+                        <span class="info-title">인력 역할</span>
+                        <p class="text-sm">Oversight Role (AI 운영, 사람 감독)</p>
+                    </div>
+                    <div class="info-item">
+                        <span class="info-title">적용 기술 요소</span>
+                        <p class="text-sm">- Sovereign AI Core<br>- Knowledge Graph<br>- Workflow Automation</p>
+                    </div>
+                    <div class="info-item">
+                        <span class="info-title">핵심 기능</span>
+                        <p class="text-sm">- AI 자율 의사결정 및 대응<br>- 응급 자동 연계(119, 의료망)<br>- 돌봄·보건·의료 통합 운영<br>- 관리자 Cockpit</p>
+                    </div>
+                    <div class="info-item">
+                        <span class="info-title">단계적 의미</span>
+                        <p class="text-sm">자율 운영 단계</p>
+                    </div>
+                    <div class="info-item">
+                        <span class="info-title">기관/가족 가치</span>
+                        <p class="text-sm">- 기관: 운영 효율, 서비스 신뢰<br>- 가족: 가족 개입 최소화, 안정된 생활</p>
+                    </div>
+                </div>
+            </div>
+    
+            <!-- Level 5 -->
+            <div class="level-card level-5-bg">
+                <div class="level-number level-5-circle">5</div>
+                <h2 class="text-2xl font-bold text-gray-800 mt-8 mb-4 text-center">Level 5</h2>
+                <div class="info-grid">
+                    <div class="info-item">
+                        <span class="info-title">기술 스택 & 데이터</span>
+                        <p class="text-sm">Sovereign AI + 로봇</p>
+                    </div>
+                    <div class="info-item">
+                        <span class="info-title">인력 역할</span>
+                        <p class="text-sm">Minimal Human Involvement (정책·윤리 감독만)</p>
+                    </div>
+                    <div class="info-item">
+                        <span class="info-title">적용 기술 요소</span>
+                        <p class="text-sm">- Robotics Platform<br>- Human-Robot Interaction AI<br>- Personalization AI</p>
+                    </div>
+                    <div class="info-item">
+                        <span class="info-title">핵심 기능</span>
+                        <p class="text-sm">- 로봇 돌봄 실행<br>- 24/7 지속 모니터링·돌봄<br>- 개인 맞춤 돌봄 시나리오 실행<br>- 정서 돌봄 로봇화</p>
+                    </div>
+                    <div class="info-item">
+                        <span class="info-title">단계적 의미</span>
+                        <p class="text-sm">완전 자율 돌봄 단계</p>
+                    </div>
+                    <div class="info-item">
+                        <span class="info-title">기관/가치</span>
+                        <p class="text-sm">- 기관: 장기 지속 가능한 모델<br>- 가족: 24시간 안심 케어, 돌봄 부담 제로</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</body>
+</html>
